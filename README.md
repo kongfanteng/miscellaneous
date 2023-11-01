@@ -1,2 +1,3 @@
 # miscellaneous
-杂学
+
+杂学笔记
