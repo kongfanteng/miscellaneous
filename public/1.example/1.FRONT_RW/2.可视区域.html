@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container"></div>
+    <style>
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .target {
+        margin: 5px;
+        width: 20px;
+        height: 20px;
+        background: red;
+      }
+    </style>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      const $container = $('.container')
+      function createTarget() {
+        const htmlString = new Array(100000)
+          .fill('<div class="target"></div>')
+          .join('')
+        $container.html(htmlString)
+      }
+      createTarget()
+    </script>
+    <script>
+      /**
+       * 元素是否在可视区域 - getBoundingClientRect
+       * @param {HTMLElement} el
+       * @returns {boolean}
+       * @example
+       *
+       * TEST:
+          const $targets = $('.target')
+          $(window).on('scroll', function () {
+            $targets.each((index, element) => {
+              if (isInViewOfOne(element)) {
+                $(element).css('background-color', 'yellow')
+              }
+            })
+          })
+       *
+       */
+      function isInViewOfOne(el) {
+        const viewWidth =
+          window.innerWidth ||
+          document.documentElement.clientWidth ||
+          document.body.clientWidth
+        const viewHeight =
+          window.innerHeight ||
+          document.documentElement.clientHeight ||
+          document.body.clientHeight
+        const { top, left, bottom, right } = el.getBoundingClientRect()
+        return (
+          top >= 0 && left >= 0 && bottom <= viewHeight && right <= viewWidth
+        )
+      }
+      /**
+       * 
+       * @example
+       * 
+       * TEST:
+          function getYellow(entries, observer) {
+            entries.forEach((entry) => {
+              $(entry.target).css('background-color', 'yellow')
+            })
+          }
+          const $targets = $('.target')
+          isInViewOfOne2($targets, getYellow)
+       * 
+      */
+      function isInViewOfOne2($targets, getYellow) {
+        const observer = new IntersectionObserver(getYellow, { threshold: 1 })
+        $targets.each((index, element) => {
+          observer.observe(element)
+        })
+      }
+      function getYellow(entries, observer) {
+        entries.forEach((entry) => {
+          $(entry.target).css('background-color', 'yellow')
+        })
+      }
+      const $targets = $('.target')
+      isInViewOfOne2($targets, getYellow)
+    </script>
+  </body>
+</html>
