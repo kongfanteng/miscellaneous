@@ -1,5 +1,6 @@
 function 纯函数() {
   let double = (value) => value * 2
+  // 可测试
   test('double(2) 等于 4', () => {
     expect(double(2)).toBe(4)
   })
@@ -83,8 +84,8 @@ function 组合与管道() {
         fns.reduce((acc, fn) => fn(acc), val)
     console.log('pipe(afn, bfn)(2):', pipe(afn, bfn)(2))
   }
+  管道()
 }
-组合与管道()
 function 函数式编程优缺点() {
   const 优点 = `
   1. 无状态或少状态；最大化减少未知错误；
