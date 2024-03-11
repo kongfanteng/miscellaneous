@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="定位MarginAuto" style="display: none">
+      <style>
+        #定位MarginAuto .father {
+          width: 500px;
+          height: 300px;
+          border: 1px solid #0a3b98;
+          position: relative;
+        }
+        #定位MarginAuto .son {
+          width: 100px;
+          height: 40px;
+          background-color: #f0a238;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          margin: auto;
+        }
+      </style>
+      <div class="father">
+        <div class="son"></div>
+      </div>
+    </div>
+    <div id="定位Margin负值" style="display: none">
+      <style>
+        #定位Margin负值.father {
+          position: relative;
+          width: 200px;
+          height: 200px;
+          background-color: skyblue;
+        }
+        #定位Margin负值 .son {
+          width: 100px;
+          height: 100px;
+          background-color: red;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          margin-left: -50px;
+          margin-top: -50px;
+        }
+      </style>
+      <div class="father">
+        <div class="son"></div>
+      </div>
+    </div>
+    <div id="定位Transform" style="display: none">
+      <style>
+        #定位Transform .father {
+          position: relative;
+          width: 200px;
+          height: 200px;
+          background-color: skyblue;
+        }
+        #定位Transform .son {
+          width: 100px;
+          height: 100px;
+          background-color: red;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      </style>
+      <div class="father">
+        <div class="son"></div>
+      </div>
+    </div>
+    <div id="table布局" style="display: none">
+      <style>
+        #table布局 .father {
+          display: table-cell;
+          width: 200px;
+          height: 200px;
+          background-color: skyblue;
+          vertical-align: middle;
+          text-align: center;
+        }
+        #table布局 .son {
+          width: 100px;
+          height: 100px;
+          background-color: red;
+          display: inline-block;
+        }
+      </style>
+      <div class="father">
+        <div class="son"></div>
+      </div>
+    </div>
+    <div id="flex布局" style="display: none">
+      <style>
+        #flex布局 .father {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 200px;
+          height: 200px;
+          background-color: skyblue;
+        }
+        #flex布局 .son {
+          width: 100px;
+          height: 100px;
+          background-color: red;
+        }
+      </style>
+      <div class="father">
+        <div class="son"></div>
+      </div>
+    </div>
+    <div id="grid布局" style="display: none">
+      <style>
+        #grid布局 .father {
+          display: grid;
+          align-items: center;
+          justify-content: center;
+          width: 200px;
+          height: 200px;
+          background-color: skyblue;
+        }
+        #grid布局 .son {
+          width: 10px;
+          height: 10px;
+          border: 1px solid red;
+        }
+      </style>
+      <div class="father">
+        <div class="son"></div>
+      </div>
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      // 提纲：定位MarginAuto; 定位Margin负值; 定位Transform; table布局; flex布局; grid布局;
+      定位MarginAuto = () => {
+        $('#定位MarginAuto').show()
+      }
+      定位Margin负值 = () => {
+        $('#定位Margin负值').show()
+      }
+      定位Transform = () => {
+        $('#定位Transform').show()
+      }
+      table布局 = () => {
+        $('#table布局').show()
+      }
+      flex布局 = () => {
+        $('#flex布局').show()
+      }
+      grid布局 = () => {
+        $('#grid布局').show()
+      }
+      grid布局()
+    </script>
+  </body>
+</html>
