@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="两栏布局" style="display: none">
+      <style>
+        #两栏布局 .box {
+          overflow: hidden;
+        }
+        #两栏布局 .left {
+          float: left;
+          width: 200px;
+          background-color: gray;
+          height: 400px;
+        }
+        #两栏布局 .right {
+          margin-left: 210px;
+          background-color: lightgray;
+          height: 200px;
+        }
+      </style>
+      <div class="box">
+        <div class="left"></div>
+        <div class="right"></div>
+      </div>
+    </div>
+    <div id="两栏布局flex" style="display: none">
+      <style>
+        #两栏布局flex .box {
+          display: flex;
+          align-items: flex-start;
+        }
+        #两栏布局flex .left {
+          float: left;
+          width: 100px;
+          background-color: gray;
+          height: 400px;
+        }
+        #两栏布局flex .right {
+          margin-left: 10px;
+          background-color: lightgray;
+          height: 200px;
+          flex: 1;
+        }
+      </style>
+      <div class="box">
+        <div class="left"></div>
+        <div class="right"></div>
+      </div>
+    </div>
+    <div id="两边float中间margin" style="display: none">
+      <style>
+        #两边float中间margin .wrap {
+          overflow: hidden;
+          background-color: #eee;
+          padding: 20px;
+          height: 200px;
+          text-align: center;
+          line-height: 50px;
+        }
+        #两边float中间margin .left {
+          float: left;
+          width: 200px;
+          height: 200px;
+          background-color: coral;
+        }
+        #两边float中间margin .right {
+          float: right;
+          width: 120px;
+          height: 200px;
+          background-color: lightblue;
+        }
+        #两边float中间margin .middle {
+          margin-left: 220px;
+          margin-right: 140px;
+          height: 200px;
+          background-color: lightpink;
+        }
+      </style>
+      <div class="wrap">
+        <div class="left">左侧</div>
+        <div class="right">右侧</div>
+        <div class="middle">中间</div>
+      </div>
+    </div>
+    <div id="两边absolute中间margin" style="display: none">
+      <style>
+        #两边absolute中间margin .wrap {
+          position: relative;
+        }
+        #两边absolute中间margin .left {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100px;
+          background-color: green;
+        }
+        #两边absolute中间margin .right {
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 100px;
+          background-color: green;
+        }
+        #两边absolute中间margin .middle {
+          margin: 0 110px;
+          background-color: #999;
+          color: white;
+        }
+        #两边absolute中间margin .left,
+        #两边absolute中间margin .right,
+        #两边absolute中间margin .middle {
+          height: 200px;
+          line-height: 200px;
+          text-align: center;
+        }
+      </style>
+      <div class="wrap">
+        <div class="left">左侧</div>
+        <div class="right">右侧</div>
+        <div class="middle">中间</div>
+      </div>
+    </div>
+    <div id="两边float负margin" style="display: none">
+      <style>
+        #两边float负margin .main-wrapper {
+          float: left;
+          width: 100%;
+        }
+        #两边float负margin .middle {
+          margin: 0 110px;
+          background-color: #333;
+          color: white;
+        }
+        #两边float负margin .left,
+        #两边float负margin .right {
+          float: left;
+          width: 100px;
+          margin-left: -100%;
+          background-color: green;
+        }
+        #两边float负margin .right {
+          margin-left: -100px;
+        }
+        #两边float负margin .left,
+        #两边float负margin .right,
+        #两边float负margin .middle {
+          height: 200px;
+          line-height: 200px;
+          text-align: center;
+        }
+      </style>
+      <div class="wrap">
+        <div class="main-wrapper">
+          <div class="middle">中间</div>
+        </div>
+        <div class="left">左侧</div>
+        <div class="right">右侧</div>
+      </div>
+    </div>
+    <div id="table三栏" style="display: none">
+      <style>
+        #table三栏 .wrap {
+          height: 200px;
+          line-height: 200px;
+          text-align: center;
+          display: table;
+          table-layout: fixed;
+          width: 100%;
+        }
+        #table三栏 .left,
+        #table三栏 .right,
+        #table三栏 .middle {
+          display: table-cell;
+        }
+        #table三栏 .left,
+        #table三栏 .right {
+          width: 100px;
+          background-color: green;
+        }
+        #table三栏 .middle {
+          background-color: #333;
+          color: white;
+          width: 100%;
+        }
+      </style>
+      <div class="wrap">
+        <div class="left">左侧</div>
+        <div class="middle">中间</div>
+        <div class="right">右侧</div>
+      </div>
+    </div>
+    <div id="flex三栏" style="display: none">
+      '<style>
+        #flex三栏 .wrap {
+          display: flex;
+          justify-content: space-between;
+          text-align: center;
+        }
+        #flex三栏 .left {
+          width: 200px;
+          background-color: coral;
+        }
+        #flex三栏 .right {
+          width: 120px;
+          background-color: lightblue;
+        }
+        #flex三栏 .middle {
+          background-color: #555;
+          width: 100%;
+          margin: 0 20px;
+        }
+        #flex三栏 .left,
+        #flex三栏 .right,
+        #flex三栏 .middle {
+          height: 100px;
+        }
+      </style>
+      <div class="wrap">
+        <div class="left">左侧</div>
+        <div class="middle">中间</div>
+        <div class="right">右侧</div>
+      </div>
+    </div>
+    <div id="grid三栏" style="display: none">
+      '<style>
+        #grid三栏 .wrap {
+          display: grid;
+          width: 100%;
+          grid-template-columns: 100px auto 100px;
+        }
+        #grid三栏 .left {
+          background-color: coral;
+        }
+        #grid三栏 .right {
+          background-color: lightblue;
+        }
+        #grid三栏 .middle {
+          background-color: #555;
+        }
+        #grid三栏 .left,
+        #grid三栏 .right,
+        #grid三栏 .middle {
+          height: 100px;
+        }
+      </style>
+      <div class="wrap">
+        <div class="left">左侧</div>
+        <div class="middle">中间</div>
+        <div class="right">右侧</div>
+      </div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      // 【提纲】: 两栏布局; 两栏布局flex; 两边float中间margin; 两边absolute中间margin; 两边float负margin; table三栏; flex三栏; grid三栏;
+      两栏布局 = () => {
+        $('#两栏布局').show()
+      }
+      两栏布局flex = () => {
+        $('#两栏布局flex').show()
+      }
+      两边float中间margin = () => {
+        $('#两边float中间margin').show()
+      }
+      两边absolute中间margin = () => {
+        $('#两边absolute中间margin').show()
+      }
+      两边float负margin = () => {
+        $('#两边float负margin').show()
+      }
+      table三栏 = () => {
+        $('#table三栏').show()
+      }
+      flex三栏 = () => {
+        $('#flex三栏').show()
+      }
+      grid三栏 = () => {
+        $('#grid三栏').show()
+      }
+      grid三栏()
+    </script>
+  </body>
+</html>
