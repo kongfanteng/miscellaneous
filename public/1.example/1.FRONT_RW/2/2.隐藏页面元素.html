@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+      </head>
+      <body>
+        <div id="displayNone" style="display: none">
+          <style>
+            #displayNone .hide {
+              display: none;
+            }
+          </style>
+          displayNoneClick
+          <div class="hide">hide</div>
+        </div>
+        <div id="visibilityHidden" style="display: none">
+          <style>
+            #visibilityHidden .hide {
+              visibility: hidden;
+            }
+          </style>
+          visibilityHiddenClick
+          <div class="hide">hide</div>
+        </div>
+        <div id="opacity0" style="display: none">
+          <style>
+            #opacity0 .hide {
+              opacity: 0;
+            }
+          </style>
+          opacity0Click
+          <div class="hide">hide</div>
+        </div>
+        <div id="heightWidth0" style="display: none">
+          <style>
+            #heightWidth0 .hide {
+              margin: 0;
+              border: 0;
+              padding: 0;
+              height: 0;
+              width: 0;
+              overflow: hidden;
+            }
+          </style>
+          heightWidth0Click
+          <div class="hide">hide</div>
+        </div>
+        <div id="positionAbsolute" style="display: none">
+          <style>
+            #positionAbsolute .hide {
+              position: absolute;
+              top: -9999px;
+              left: -9999px;
+            }
+          </style>
+          positionAbsoluteClick
+          <div class="hide">hide</div>
+        </div>
+        <div id="clipPath" style="display: none">
+          <style>
+            #clipPath .hide {
+              clip-path: polygon(0px 0px, 0px 0px, 0px 0px, 0px 0px);
+            }
+          </style>
+          clipPathClick
+          <div class="hide">hide</div>
+        </div>
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+          // 【提纲】: displayNone; visibilityHidden; opacity0; heightWidth0; positionAbsolute; clipPath;
+          displayNone = () => {
+            $('#displayNone').show()
+            $('#displayNone').click(() => {
+              $('#displayNone .hide').toggle()
+            })
+          }
+          visibilityHidden = () => {
+            $('#visibilityHidden').show()
+            $('#visibilityHidden').click(() => {
+              const visibilityVal =
+                $('#visibilityHidden .hide').css('visibility') === 'visible'
+                  ? 'hidden'
+                  : 'visible'
+              $('#visibilityHidden .hide').css('visibility', visibilityVal)
+            })
+          }
+          opacity0 = () => {
+            $('#opacity0').show()
+            $('#opacity0').click(() => {
+              const opacityVal =
+                $('#opacity0 .hide').css('opacity') == 0 ? 1 : 0
+              $('#opacity0 .hide').css('opacity', opacityVal)
+            })
+          }
+          heightWidth0 = () => {
+            $('#heightWidth0').show()
+            $('#heightWidth0').click(() => {
+              const heightWidth0Val =
+                $('#heightWidth0 .hide').css('width') == '0px' ? '100px' : '0px'
+              $('#heightWidth0 .hide').css('width', heightWidth0Val)
+              $('#heightWidth0 .hide').css('height', heightWidth0Val)
+            })
+          }
+          positionAbsolute = () => {
+            $('#positionAbsolute').show()
+            $('#positionAbsolute').click(() => {
+              const positionAbsoluteVal =
+                $('#positionAbsolute .hide').css('position') === 'absolute'
+                  ? 'inherit'
+                  : 'absolute'
+              $('#positionAbsolute .hide').css('position', positionAbsoluteVal)
+            })
+          }
+          clipPath = () => {
+            $('#clipPath').show()
+            $('#clipPath').click(() => {
+              const clipPathVal =
+                $('#clipPath .hide').css('clip-path') !== 'none'
+                  ? 'none'
+                  : 'polygon(0px 0px, 0px 0px, 0px 0px, 0px 0px)'
+              $('#clipPath .hide').css('clip-path', clipPathVal)
+            })
+          }
+        </script>
+      </body>
+    </html>
+  </body>
+</html>
