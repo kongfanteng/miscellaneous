@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="margin重叠" style="display: none">
+      <style>
+        p {
+          color: #f55;
+          background-color: #fcc;
+          width: 200px;
+          line-height: 100px;
+          text-align: center;
+          margin: 100px;
+        }
+      </style>
+      <p>HaHa</p>
+      <p>HeHe</p>
+    </div>
+    <div id="防止margin重叠" style="display: none">
+      <style>
+        .wrap {
+          /* 生成新的 BFC */
+          overflow: hidden;
+        }
+        p {
+          color: #f55;
+          background-color: #fcc;
+          width: 200px;
+          line-height: 100px;
+          text-align: center;
+          margin: 100px;
+        }
+      </style>
+      <p>HaHa</p>
+      <div class="wrap">
+        <p>HeHe</p>
+      </div>
+    </div>
+    <div type="清除内部浮动">
+      <div id="内部浮动" style="display: none">
+        <style>
+          .par {
+            border: 5px solid #fcc;
+            width: 300px;
+          }
+          .child {
+            border: 5px solid #f66;
+            width: 100px;
+            float: left;
+            height: 100px;
+          }
+        </style>
+        <div class="par">
+          <div class="child"></div>
+          <div class="child"></div>
+        </div>
+      </div>
+      <div id="清除内部浮动" style="display: none">
+        <style>
+          .par {
+            border: 5px solid #fcc;
+            width: 300px;
+            overflow: hidden;
+          }
+          .child {
+            border: 5px solid #f66;
+            width: 100px;
+            float: left;
+            height: 100px;
+          }
+        </style>
+        <div class="par">
+          <div class="child"></div>
+          <div class="child"></div>
+        </div>
+      </div>
+    </div>
+    <div type="自适应多栏布局">
+      <div id="多栏布局" style="display: none">
+        <style>
+          body {
+            width: 300px;
+            position: relative;
+          }
+          .aside {
+            width: 100px;
+            height: 150px;
+            float: left;
+            background: #f66;
+          }
+          .main {
+            height: 200px;
+            background-color: #fcc;
+          }
+        </style>
+        <div class="aside"></div>
+        <div class="main"></div>
+      </div>
+      <div id="自适应多栏布局" style="display: none">
+        <style>
+          body {
+            width: 300px;
+            position: relative;
+          }
+          .aside {
+            width: 100px;
+            height: 150px;
+            float: left;
+            background: #f66;
+          }
+          .main {
+            overflow: hidden;
+            height: 200px;
+            background-color: #fcc;
+          }
+        </style>
+        <div class="aside"></div>
+        <div class="main"></div>
+      </div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      防止margin重叠 = () => {
+        margin重叠 = () => {
+          $('#margin重叠').show()
+        }
+        防止margin重叠 = () => {
+          $('#防止margin重叠').show()
+        }
+        防止margin重叠()
+      }
+      清除内部浮动 = () => {
+        内部浮动 = () => {
+          $('#内部浮动').show()
+        }
+        清除内部浮动 = () => {
+          $('#清除内部浮动').show()
+        }
+        清除内部浮动()
+      }
+      自适应多栏布局 = () => {
+        多栏布局 = () => {
+          $('#多栏布局').show()
+        }
+        自适应多栏布局 = () => {
+          $('#自适应多栏布局').show()
+        }
+        自适应多栏布局()
+      }
+      自适应多栏布局()
+    </script>
+  </body>
+</html>
