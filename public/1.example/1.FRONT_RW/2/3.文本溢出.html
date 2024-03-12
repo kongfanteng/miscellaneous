@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+      </head>
+      <body>
+        <div>
+          <div id="单行文本" style="display: none">
+            <style>
+              #单行文本 p {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                line-height: 40px;
+                width: 400px;
+                height: 40px;
+                border: 1px solid red;
+              }
+            </style>
+            <p>
+              单行文本单行文本单行文本单行文本单行文本单行文本单行文本单行文本单行文本单行文本单行文本单行文本单行文本单行文本单行文本单行文本单行文本单行文本单行文本
+            </p>
+          </div>
+          <div id="多行高度" style="display: none">
+            <style>
+              #多行高度 p {
+                position: relative;
+                line-height: 20px;
+                height: 40px;
+                overflow: hidden;
+                width: 400px;
+                background-color: #fff;
+              }
+              #多行高度 p::after {
+                content: '...';
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                padding: 0 20px 0 10px;
+                background-color: inherit;
+              }
+            </style>
+            <p>
+              多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本
+            </p>
+          </div>
+          <div id="多行行数" style="display: none">
+            <style>
+              #多行行数 p {
+                border-radius: 1px solid red;
+                -webkit-line-clamp: 2;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                width: 400px;
+              }
+            </style>
+            <p>
+              多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本
+            </p>
+          </div>
+          <div id="多行行数JS" style="display: none">
+            <style>
+              #多行行数JS p {
+                position: relative;
+                width: 400px;
+                line-height: 20px;
+                overflow: hidden;
+              }
+              #多行行数JS p::after {
+                content: '...';
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                padding-left: 40px;
+                background: -webkit-linear-gradient(
+                  left,
+                  transparent,
+                  #fff 55%
+                );
+                background: -moz-linear-gradient(left, transparent, #fff 55%);
+                background: -o-linear-gradient(left, transparent, #fff 55%);
+                background: linear-gradient(left, transparent, #fff 55%);
+              }
+            </style>
+            <p>
+              多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本多行文本
+            </p>
+          </div>
+        </div>
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+          // 【提纲】: 单行文本; 多行高度; 多行行数; 多行行数JS;
+          单行文本 = () => {
+            $('#单行文本').show()
+          }
+          多行高度 = () => {
+            $('#多行高度').show()
+          }
+          多行行数 = () => {
+            $('#多行行数').show()
+          }
+          多行行数JS = () => {
+            $('#多行行数JS').show()
+            $(function () {
+              $('#多行行数JS p').each(function (i, obj) {
+                const lineHeight = parseInt($(this).css('line-height'))
+                const height = parseInt($(this).height())
+                if (height / lineHeight > 3) {
+                  $(this).addClass('p-after')
+                  $(this).css('height', '60px')
+                } else {
+                  $(this).removeClass('p-after')
+                }
+              })
+            })
+          }
+          多行行数JS()
+        </script>
+      </body>
+    </html>
+  </body>
+</html>
