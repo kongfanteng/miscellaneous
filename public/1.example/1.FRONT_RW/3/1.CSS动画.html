@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+      </head>
+      <body>
+        <div>
+          <div id="transition" style="display: none">
+            <p>
+              property; duration; timing-function; delay; timing-function:
+              linear; ease; ease-in; ease-out; ease-in-out;
+              cubic-bezier(n,n,n,n);
+            </p>
+            <style>
+              #transition .base {
+                width: 100px;
+                height: 100px;
+                display: inline-block;
+                background-color: #0ea9ff;
+                border-width: 5px;
+                border-style: solid;
+                border-color: #5daf34;
+                transition-property: width, height, background-color,
+                  border-width;
+                transition-duration: 2s;
+                transition-timing-function: ease-in;
+                transition-delay: 500ms;
+              }
+              #transition .base:hover {
+                width: 200px;
+                height: 200px;
+                background-color: #5daf34;
+                border-width: 10px;
+                border-color: #3a8ee6;
+              }
+            </style>
+            <div class="base"></div>
+          </div>
+          <div id="transform" style="display: none">
+            <p>translate; scale; rotate; skew;</p>
+            <p>配合 transition 使用</p>
+            <p>transform 不支持inline元素</p>
+            <style>
+              #transform .base {
+                width: 100px;
+                height: 100px;
+                display: inline-block;
+                background-color: #0ea9ff;
+                border-width: 5px;
+                border-style: solid;
+                border-color: #5daf34;
+                transition: all 2s ease-in 5ms;
+              }
+              #transform .base2 {
+                transform: none;
+                transition-property: transform;
+                transition-delay: 5ms;
+              }
+              #transform .base2:hover {
+                transform: scale(0.8, 1.5) rotate(35deg) skew(5deg)
+                  translate(15px, 25px);
+              }
+            </style>
+            <div class="base base2"></div>
+          </div>
+          <div id="animation" style="display: none">
+            <p>
+              animation-duration; animation-timing-function; animation-delay;
+              animation-iteration-count; animation-direction;
+              animation-fill-mode; animation-play-state; animation-name;
+            </p>
+            <p>@keyframes 定义关键帧;</p>
+            <style>
+              #animation .base {
+                width: 100px;
+                height: 100px;
+                display: inline-block;
+                background-color: #0ea9ff;
+                border-width: 5px;
+                border-style: solid;
+                border-color: #5daf34;
+                transition: all 2s ease-in 5ms;
+              }
+              @keyframes rotate {
+                0% {
+                  transform: rotate(0deg);
+                }
+                50% {
+                  transform: rotate(180deg);
+                }
+                100% {
+                  transform: rotate(360deg);
+                }
+              }
+              #animation .base2 {
+                animation: rotate 2s ease-in 5ms infinite;
+              }
+            </style>
+            <div class="base base2"></div>
+          </div>
+        </div>
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+          // 提纲: transition; transform; animation;
+          transition = () => {
+            $('#transition').show()
+          }
+          // transition()
+          transform = () => {
+            $('#transform').show()
+          }
+          // transform()
+          animation = () => {
+            $('#animation').show()
+          }
+          animation()
+        </script>
+      </body>
+    </html>
+  </body>
+</html>
