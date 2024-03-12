@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+      </head>
+      <body>
+        <div>
+          <div id="异步加载CSS" style="display: none">
+            <div class="el" style="position: relative">
+              每次循环重新多次获取offset，触发回流、重绘
+            </div>
+          </div>
+        </div>
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+          // 提纲: 异步加载CSS;
+          异步加载CSS = () => {
+            const myCSS = document.createElement('link')
+            myCSS.rel = 'stylesheet'
+            myCSS.href = 'mystyle.css'
+            document.head.insertBefore(myCSS, document.head.childNodes[document.head.childNodes.length - 1].nextSibling)
+          }
+          异步加载CSS()
+        </script>
+      </body>
+    </html>
+  </body>
+</html>
