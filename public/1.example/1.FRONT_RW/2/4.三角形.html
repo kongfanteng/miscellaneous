@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+      </head>
+      <body>
+        <div>
+          <div id="三角" style="display: none">
+            <style>
+              #三角 .border {
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 0 50px 50px;
+                border-color: transparent transparent #d9534f;
+              }
+            </style>
+            <div class="border"></div>
+          </div>
+          <div id="空心三角" style="display: none">
+            <style>
+              #空心三角 .border {
+                position: absolute;
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 0 50px 50px;
+                border-color: transparent transparent #d9534f;
+              }
+              #空心三角 .border:after {
+                content: '';
+                border-style: solid;
+                border-width: 0 40px 40px;
+                border-color: transparent transparent #96c1b4;
+                position: absolute;
+                top: 6px;
+                left: -40px;
+              }
+            </style>
+            <div class="border"></div>
+          </div>
+          <div id="直角三角" style="display: none">
+            <style>
+              #直角三角 .border {
+                width: 0;
+                height: 0;
+                border-top: #4285f4 solid;
+                border-right: transparent solid;
+                border-width: 85px;
+                margin: 50px;
+              }
+            </style>
+            <div class="border"></div>
+          </div>
+        </div>
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+          // 提纲: 三角; 空心三角; 直角三角;
+          三角 = () => {
+            $('#三角').show()
+          }
+          三角()
+          空心三角 = () => {
+            $('#空心三角').show()
+          }
+          // 空心三角()
+          直角三角 = () => {
+            $('#直角三角').show()
+          }
+          // 直角三角()
+        </script>
+      </body>
+    </html>
+  </body>
+</html>
