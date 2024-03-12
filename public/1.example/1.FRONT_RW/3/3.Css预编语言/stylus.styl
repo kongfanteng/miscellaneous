@@ -1,0 +1,33 @@
+// 提纲: 基本使用; 嵌套; 变量; 作用域; 混入; 代码模块化;
+#基本使用
+  .boxStylus
+    background-color: #888
+    color: white
+#嵌套
+  .stylus.a
+    &.b
+      color: blue
+#变量
+  y = yellow
+  .stylusStrong
+    background-color: y
+#作用域
+  c = block
+  .stylusScope
+    c = white
+    bg = blue
+    color: c
+    background-color: bg
+  .stylusUnscoped 
+    color: c;
+#混入
+  alert()
+    font-weight: 700;  
+  stylusHighlight(color = red)
+    background-color: color;
+  .stylusHeadsUp
+    stylusHighlight(red)
+    alert()
+#代码模块化
+  @import './代码模块化.styl'
+  

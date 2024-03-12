@@ -1,0 +1,27 @@
+@charset "UTF-8";
+#基本使用 .boxSass {
+  background-color: #777;
+  color: white; }
+
+#嵌套 .sass.a.b {
+  color: green; }
+
+#变量 .sassStrong {
+  background-color: green; }
+
+#作用域 .sassScope {
+  color: #ddd;
+  background-color: blue; }
+#作用域 .sassUnscoped {
+  color: #ddd; }
+
+#混入 .alert {
+  font-weight: 700; }
+#混入 .sassHeadsUp {
+  font-weight: 700;
+  background-color: red; }
+
+#代码模块化 .sassWeight {
+  font-weight: 700; }
+
+/*# sourceMappingURL=scss.css.map */

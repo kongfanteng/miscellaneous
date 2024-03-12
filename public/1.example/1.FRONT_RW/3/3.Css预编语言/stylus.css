@@ -1,0 +1,24 @@
+#基本使用 .boxStylus {
+  background-color: #888;
+  color: #fff;
+}
+#嵌套 .stylus.a.b {
+  color: #00f;
+}
+#变量 .stylusStrong {
+  background-color: #ff0;
+}
+#作用域 .stylusScope {
+  color: #fff;
+  background-color: #00f;
+}
+#作用域 .stylusUnscoped {
+  color: block;
+}
+#混入 .stylusHeadsUp {
+  background-color: #f00;
+  font-weight: 700;
+}
+#代码模块化 .stylusWeight {
+  font-weight: 700;
+}

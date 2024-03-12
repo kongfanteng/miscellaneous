@@ -1,0 +1,27 @@
+#基本使用 .boxLess {
+  background-color: #666;
+  color: #fff;
+}
+#嵌套 .less.a.b {
+  color: red;
+}
+#变量 .lessStrong {
+  background-color: #c00;
+}
+#作用域 .lessScope {
+  color: #ddd;
+  background-color: blue;
+}
+#作用域 .lessUnscoped {
+  color: black;
+}
+#混入 .alert {
+  font-weight: 700;
+}
+#混入 .lessHeadsUp {
+  font-weight: 700;
+  background-color: red;
+}
+#代码模块化 .lessWeight {
+  font-weight: 700;
+}

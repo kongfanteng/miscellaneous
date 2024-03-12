@@ -1,0 +1,64 @@
+// 提纲: 基本使用; 嵌套; 变量; 作用域; 混入; 代码模块化;
+#基本使用 {
+  .boxSass {
+    background-color: #777;
+    color: white;
+  }
+}
+
+#嵌套 {
+  .sass.a {
+    &.b {
+      color: green;
+    }
+  }
+}
+
+#变量 {
+  $green: green;
+
+  .sassStrong {
+    background-color: $green;
+  }
+}
+
+// sass 无全局变量概念
+#作用域 {
+  $color: black;
+
+  .sassScope {
+    $bg: blue;
+    $color: #ddd;
+    color: $color;
+    background-color: $bg;
+  }
+
+  .sassUnscoped {
+    color: $color;
+  }
+}
+
+#混入 {
+  @mixin alert {
+    font-weight: 700;
+  }
+
+  @mixin sassHighlight($color: red) {
+    background-color: $color;
+  }
+
+  .alert {
+    @include alert;
+  }
+
+  .sassHeadsUp {
+    @include alert;
+    @include sassHighlight(red);
+  }
+}
+
+
+
+#代码模块化 {
+  @import './代码模块化.scss';
+}

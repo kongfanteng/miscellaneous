@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <link rel="stylesheet" href="./less.css" />
+    <link rel="stylesheet" href="./scss.css" />
+    <link rel="stylesheet" href="./stylus.css" />
+    <div>
+      <!-- 提纲: 基本使用; 嵌套; 变量; 作用域; 混入; 代码模块化; -->
+      <div id="基本使用">
+        <div class="boxLess">less基本使用</div>
+        <div class="boxSass">sass基本使用</div>
+        <div class="boxStylus">stylus基本使用</div>
+      </div>
+      <div id="嵌套">
+        <div class="less a b"><span>less嵌套</span></div>
+        <div class="sass a b">sass嵌套</div>
+        <div class="stylus a b">stylus嵌套</div>
+      </div>
+      <div id="变量">
+        <div class="lessStrong">less变量</div>
+        <div class="sassStrong">sass变量</div>
+        <div class="stylusStrong">stylus变量</div>
+      </div>
+      <div id="作用域">
+        <div>
+          <span class="lessScope">less作用域</span>
+          <span class="lessUnscoped"
+            >lessUnscoped 作用域概念，设置black，生效</span
+          >
+        </div>
+        <div>
+          <span class="sassScope">sass作用域</span>
+          <span class="sassUnscoped"
+            >sassUnscoped 无全局作用域概念，设置black，未生效</span
+          >
+        </div>
+        <div>
+          <span class="stylusScope">stylus作用域</span>
+          <span class="stylusUnscoped"
+            >stylusUnscoped 作用域概念，设置black，生效</span
+          >
+        </div>
+      </div>
+      <div id="混入">
+        <div class="lessHeadsUp">less混入</div>
+        <div class="sassHeadsUp">sass混入</div>
+        <div class="stylusHeadsUp">stylus混入</div>
+      </div>
+
+      <div id="代码模块化">
+        <div class="lessWeight">less代码模块化</div>
+        <div class="sassWeight">sass代码模块化</div>
+        <div class="stylusWeight">stylus代码模块化</div>
+      </div>
+    </div>
+  </body>
+</html>

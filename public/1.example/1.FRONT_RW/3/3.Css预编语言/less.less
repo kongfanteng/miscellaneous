@@ -1,0 +1,58 @@
+// 提纲: 基本使用; 嵌套; 变量; 作用域; 混入; 代码模块化;
+#基本使用 {
+  .boxLess {
+    background-color: #666;
+    color: #fff;
+  }
+}
+
+#嵌套 {
+  .less.a {
+    &.b {
+      color: red;
+    }
+  }
+}
+
+
+#变量 {
+  @red: #c00;
+
+  .lessStrong {
+    background-color: @red;
+  }
+}
+
+#作用域 {
+  @color: black;
+
+  .lessScope {
+    @bg: blue;
+    @color: #ddd;
+    color: @color;
+    background-color: @bg;
+  }
+
+  .lessUnscoped {
+    color: @color;
+  }
+}
+
+#混入 {
+  .alert {
+    font-weight: 700;
+  }
+
+  .lessHighlight(@color: red) {
+    background-color: @color;
+  }
+
+  .lessHeadsUp {
+    .alert;
+    .lessHighlight(red)
+  }
+}
+
+#代码模块化 {
+  @import './代码模块化.less';
+}
