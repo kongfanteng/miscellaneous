@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+      </head>
+      <body>
+        <div>
+          <div id="useOffset" style="display: none">
+            <div class="el" style="position: relative">
+              每次循环重新多次获取offset，触发回流、重绘
+            </div>
+          </div>
+          <div id="useOffset优化" style="display: none">
+            <div class="el" style="position: relative">
+              一次性将计算结果应用到DOM上
+            </div>
+          </div>
+          <div id="use样式" style="display: none">
+            <div class="container">js 直接改变样式</div>
+          </div>
+          <div id="use样式优化" style="display: none">
+            <style>
+              #use样式优化 .basic_style {
+                width: 100px;
+                height: 200px;
+                border: 1px solid red;
+                color: red;
+              }
+            </style>
+            <div class="container">js 通过class名改变样式</div>
+          </div>
+          <div id="setCss" style="display: none">
+            <div class="container">js 改样式</div>
+          </div>
+          <div id="setCssUseDisplayNone" style="display: none">
+            <div class="container">
+              先用diplay:none; 移除元素，修改完样式，再添加到页面
+            </div>
+          </div>
+        </div>
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+          // 提纲: useOffset; useOffset优化; use样式; use样式优化; setCss; setCssUseDisplayNone;
+          useOffset = () => {
+            $('#useOffset').show()
+            const el = $('#useOffset .el')
+            for (let i = 0; i < 10; i++) {
+              el.css('top', el.offset().top + 10 + 'px')
+              el.css('left', el.offset().top + 10 + 'px')
+            }
+          }
+          // useOffset()
+          useOffset优化 = () => {
+            $('#useOffset优化').show()
+            const el = $('#useOffset优化 .el')
+            let { left, top } = el.offset()
+            for (let i = 0; i < 10; i++) {
+              left += 10
+              top += 10
+            }
+            el.css({ left, top })
+          }
+          // useOffset优化()
+          use样式 = () => {
+            $('#use样式').show()
+            const el = $('#use样式 .container')
+            el.css({
+              width: '100px',
+              height: '200px',
+              border: '1px solid red',
+              color: 'red',
+            })
+          }
+          // use样式()
+          use样式优化 = () => {
+            $('#use样式优化').show()
+            const el = $('#use样式优化 .container')
+            el.toggleClass('basic_style')
+          }
+          // use样式优化()
+          setCss = () => {
+            $('#setCss').show()
+            $('#setCss .container').css({
+              width: '100px',
+              height: '200px',
+              border: '1px solid red',
+              color: 'red',
+            })
+          }
+          // setCss()
+          setCssUseDisplayNone = () => {
+            $('#setCssUseDisplayNone').show()
+            $('#setCssUseDisplayNone .container').css({
+              display: 'none',
+            })
+            $('#setCssUseDisplayNone .container').css({
+              width: '100px',
+              height: '200px',
+              border: '1px solid red',
+              color: 'red',
+            })
+            $('#setCssUseDisplayNone .container').css({
+              display: 'block',
+            })
+          }
+          setCssUseDisplayNone()
+        </script>
+      </body>
+    </html>
+  </body>
+</html>
