@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <div id="props传递" style="display: none"></div>
+      <div id="emit自定义事件" style="display: none"></div>
+      <div id="ref使用" style="display: none"></div>
+      <div id="EventBus" style="display: none"></div>
+      <div id="parentOrRoot" style="display: none"></div>
+      <div id="attrsAndListeners" style="display: none"></div>
+      <div id="ProvideInject" style="display: none"></div>
+      <div id="VuexData" style="display: none"></div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.9/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vuex/3.5.1/vuex.js"></script>
+    <script>
+      // 提纲: props传递; emit自定义事件; ref使用; EventBus; parentOrRoot; attrsAndListeners; ProvideInject; VuexData;
+      props传递 = () => {
+        const child = {
+          props: {
+            name: String,
+            age: {
+              type: Number,
+              default: 18,
+              requrie: true,
+            },
+          },
+          template: `<span>name: {{name}};age: {{age}},</span>`,
+        }
+        var app = new Vue({
+          el: '#props传递',
+          data() {
+            return { age: 18 }
+          },
+          components: { child },
+          template: `<child name="jack" :age=age />`,
+        })
+      }
+      // props传递()
+      emit自定义事件 = () => {
+        const child = {
+          template: `<span @click="$emit('add', '商品')">emit自定义事件</span>`,
+        }
+        var app = new Vue({
+          el: '#emit自定义事件',
+          methods: {
+            cartAdd: (s1) => console.log(s1, `商品`),
+          },
+          components: { child },
+          template: `<child @add="cartAdd" />`,
+        })
+      }
+      // emit自定义事件()
+      ref使用 = () => {
+        const child = {
+          data() {
+            return {
+              childData: 'ref使用',
+            }
+          },
+          template: `<span>{{childData}}</span>`,
+        }
+        var app = new Vue({
+          el: '#ref使用',
+          components: { child },
+          mounted() {
+            console.log(this.$refs.foo.childData, 'ref使用')
+          },
+          template: `<child ref="foo" />`,
+        })
+      }
+      // ref使用()
+      EventBus = () => {
+        const child1 = {
+          template: `<p @click="$bus.$emit('foo', 'child1数据')">child1向child2进行信息同步</p>`,
+        }
+        const child2 = {
+          mounted() {
+            this.$bus.$on('foo', (s) => console.log(s, 'child1数据'))
+          },
+          template: `<p>child2</p>`,
+        }
+        Vue.prototype.$bus = new Vue()
+        var app = new Vue({
+          el: '#EventBus',
+          components: { child1, child2 },
+          template: `<div><child1 /><child2 /></div>`,
+        })
+      }
+      // EventBus()
+      parentOrRoot = () => {
+        const child1 = {
+          template: `<p @click="$parent.$emit('add', 'child1数据')">parentOrRoot: child1向child2进行信息同步</p>`,
+        }
+        const child2 = {
+          mounted() {
+            this.$parent.$on('add', (s) => console.log(s, 'child1数据'))
+          },
+          template: `<p>child2</p>`,
+        }
+        var app = new Vue({
+          el: '#parentOrRoot',
+          components: { child1, child2 },
+          template: `<div><child1 /><child2 /></div>`,
+        })
+      }
+      // parentOrRoot()
+      attrsAndListeners = () => {
+        const GrandSon = {
+          template: `<div @click="$emit('some-event', 'msg from Grandson')">点击触发祖先方法：{{$attrs.msg}}</div>`,
+        }
+        const child = {
+          components: { GrandSon },
+          template: `<GrandSon v-bind="$attrs" v-on="$listeners" />`,
+        }
+        var app = new Vue({
+          el: '#attrsAndListeners',
+          components: { child },
+          template: `<child msg="lalala" @some-event="onSomeEvent" />`,
+          methods: {
+            onSomeEvent(msg) {
+              console.log('onSomeEvent', msg)
+            },
+          },
+        })
+      }
+      // attrsAndListeners()
+      ProvideInject = () => {
+        const GrandSon = {
+          inject: ['foo'],
+          template: `<div>{{foo}}</div>`,
+        }
+        const child = {
+          components: { GrandSon },
+          template: `<GrandSon />`,
+        }
+        var app = new Vue({
+          el: '#ProvideInject',
+          components: { child },
+          template: `<child  />`,
+          provide() {
+            return {
+              foo: 'foo',
+            }
+          },
+        })
+      }
+      // ProvideInject()
+      VuexData = () => {
+        const GrandSon = {
+          template: `<div>GrandSon vuex.store {{$store.state.foo}}</div>`,
+        }
+        const child = {
+          components: { GrandSon },
+          template: `<GrandSon />`,
+        }
+        const store = new Vuex.Store({
+          state() {
+            return {
+              foo: 'foo',
+            }
+          },
+        })
+        var app = new Vue({
+          el: '#VuexData',
+          components: { child },
+          store,
+          template: `<child  />`,
+        })
+      }
+      VuexData()
+    </script>
+  </body>
+</html>
