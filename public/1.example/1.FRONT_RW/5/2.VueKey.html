@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <div id="不设置key3次DOM操作" style="display: none"></div>
+      <div id="设置key1次DOM操作" style="display: none"></div>
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.9/vue.js"></script>
+    <script>
+      // 提纲: 不设置key3次DOM操作; 设置key1次DOM操作;
+      不设置key3次DOM操作 = () => {
+        var app = new Vue({
+          el: '#不设置key3次DOM操作',
+          data() {
+            return {
+              items: ['a', 'b', 'c', 'd', 'e'],
+            }
+          },
+          mounted() {
+            setTimeout(() => {
+              this.items.splice(2, 0, 'f')
+            }, 2000)
+          },
+          template: `
+            <div>
+              <p v-for="item in items">{{item}}</p>
+            </div>
+          `,
+        })
+      }
+      // 不设置key3次DOM操作()
+      设置key1次DOM操作 = () => {
+        var app = new Vue({
+          el: '#设置key1次DOM操作',
+          data() {
+            return {
+              items: ['a', 'b', 'c', 'd', 'e'],
+            }
+          },
+          mounted() {
+            setTimeout(() => {
+              this.items.splice(2, 0, 'f')
+            }, 5000)
+          },
+          template: `
+            <div>
+              <p v-for="item in items" :key=item>{{item}}</p>
+            </div>
+          `,
+        })
+      }
+      设置key1次DOM操作()
+    </script>
+  </body>
+</html>

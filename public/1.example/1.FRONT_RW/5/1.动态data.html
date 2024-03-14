@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <div id="直接添加属性页面无反应" style="display: none"></div>
+      <div id="VueSet" style="display: none"></div>
+      <div id="ObjectAssign" style="display: none"></div>
+      <div id="强制$forceUpdate" style="display: none"></div>
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.9/vue.js"></script>
+    <script>
+      // 提纲: 直接添加属性页面无反应; VueSet; ObjectAssign; 强制$forceUpdate;
+      直接添加属性页面无反应 = () => {
+        var app = new Vue({
+          el: '#直接添加属性页面无反应',
+          data() {
+            return {
+              item: {
+                oldProperty: '旧属性',
+              },
+            }
+          },
+          methods: {
+            addProperty() {
+              this.item.newProperty = '新属性'
+              console.log(
+                this.item,
+                `{"oldProperty":"旧属性","newProperty":"新属性"}, 数据变化页面无更新`
+              )
+            },
+          },
+          template: `
+            <div>
+              <p v-for="(value,key) in item" :key="key">{{value}}</p>
+              <button @click="addProperty">动态添加新属性</button>
+            </div>
+          `,
+        })
+      }
+      // 直接添加属性页面无反应()
+      VueSet = () => {
+        var app = new Vue({
+          el: '#VueSet',
+          data() {
+            return {
+              item: {
+                oldProperty: '旧属性',
+              },
+            }
+          },
+          methods: {
+            addProperty() {
+              Vue.set(this.item, 'newProperty', '新属性')
+            },
+          },
+          template: `
+            <div>
+              <p v-for="(value,key) in item" :key="key">{{value}}</p>
+              <button @click="addProperty">动态添加新属性</button>
+            </div>
+          `,
+        })
+      }
+      // VueSet()
+      ObjectAssign = () => {
+        var app = new Vue({
+          el: '#ObjectAssign',
+          data() {
+            return {
+              item: {
+                oldProperty: '旧属性',
+              },
+            }
+          },
+          methods: {
+            addProperty() {
+              this.item = Object.assign({}, this.item, {
+                newProperty: '新属性',
+              })
+            },
+          },
+          template: `
+            <div>
+              <p v-for="(value,key) in item" :key="key">{{value}}</p>
+              <button @click="addProperty">动态添加新属性</button>
+            </div>
+          `,
+        })
+      }
+      // ObjectAssign()
+      强制$forceUpdate = () => {
+        var app = new Vue({
+          el: '#ObjectAssign',
+          data() {
+            return {
+              item: {
+                oldProperty: '旧属性',
+              },
+            }
+          },
+          methods: {
+            addProperty() {
+              this.item.newProperty = '新属性'
+              this.$forceUpdate()
+            },
+          },
+          template: `
+            <div>
+              <p v-for="(value,key) in item" :key="key">{{value}}</p>
+              <button @click="addProperty">动态添加新属性</button>
+            </div>
+          `,
+        })
+      }
+      强制$forceUpdate()
+    </script>
+  </body>
+</html>
