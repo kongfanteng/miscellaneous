@@ -50,7 +50,53 @@
             <div class="a-img3">6</div>
             <div class="a-text">7</div>
           </div>
-          <div id="transformTranlate3D" style="display: none"></div>
+          <div id="transformTranlate3D" style="display: none">
+            <style>
+              html #transformTranlate3D {
+                overflow: hidden;
+                height: 100%;
+              }
+              body #transformTranlate3D {
+                perspective: 1px;
+                transform-style: preserve-3d;
+                height: 100%;
+                overflow-y: scroll;
+                overflow-x: hidden;
+              }
+              #transformTranlate3D #app {
+                width: 100vw;
+                height: 200vh;
+                background-color: skyblue;
+                padding-top: 100px;
+              }
+              #transformTranlate3D .one {
+                width: 500px;
+                height: 200px;
+                background-color: #409eff;
+                transform: translateZ(0px);
+                margin-bottom: 50px;
+              }
+              #transformTranlate3D .two {
+                width: 500px;
+                height: 200px;
+                background-color: #67c23a;
+                transform: translateZ(-1px);
+                margin-bottom: 150px;
+              }
+              #transformTranlate3D .three {
+                width: 500px;
+                height: 200px;
+                background-color: #e6a23c;
+                transform: translateZ(-2px);
+                margin-bottom: 150px;
+              }
+            </style>
+            <div id="app">
+              <div class="one">one</div>
+              <div class="two">two</div>
+              <div class="three">three</div>
+            </div>
+          </div>
         </div>
         <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
@@ -58,11 +104,11 @@
           backgroundAttachment = () => {
             $('#backgroundAttachment').show()
           }
-          backgroundAttachment()
+          // backgroundAttachment()
           transformTranlate3D = () => {
             $('#transformTranlate3D').show()
           }
-          // transformTranlate3D()
+          transformTranlate3D()
         </script>
       </body>
     </html>
