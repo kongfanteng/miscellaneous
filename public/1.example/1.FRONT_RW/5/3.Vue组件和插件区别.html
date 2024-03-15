@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <div id="app"></div>
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.9/vue.js"></script>
+    <script>
+      // 提纲: 编写; 注册; 使用;
+      编写 = () => {
+        // 组件编写; 插件编写;
+        组件编写 = () => {
+          Vue.component('ComponentA', {
+            template: `<div>组件编写</div>`,
+          })
+          const app = new Vue({
+            el: '#app',
+            template: `<ComponentA/>`,
+          })
+        }
+        // 组件编写()
+        插件编写 = () => {
+          const MyPlugin = {}
+          MyPlugin.install = function (Vue, options) {
+            // 添加全局方法
+            Vue.myGlobalMethod = function () {
+              return '全局方法'
+            }
+            // 添加全局资源
+            Vue.directive('my-directive', function (el, binding) {
+              console.log('添加全局资源')
+            })
+            // 注入组件
+            Vue.mixin({
+              created() {
+                console.log('注入组件')
+              },
+            })
+            // 实例方法
+            Vue.prototype.$myMethod = function () {
+              return '实例方法'
+            }
+          }
+          Vue.use(MyPlugin)
+          const app = new Vue({
+            el: '#app',
+            template: `<div v-my-directive>hehe</div>`,
+            mounted() {
+              console.log(Vue.myGlobalMethod(), '全局方法')
+              console.log(this.$myMethod(), '实例方法')
+            },
+          })
+        }
+        // 插件编写()
+      }
+      // 编写()
+      注册 = () => {
+        // 组件注册; 插件注册;
+        组件注册 = () => {
+          // 全局; 局部;
+          全局 = () => {
+            Vue.component('global-component', {
+              template: '<div>全局组件</div>',
+            })
+            new Vue({
+              el: '#app',
+              template: `<global-component />`,
+            })
+          }
+          // 全局()
+          局部 = () => {
+            const GlobalComponent = {
+              template: '<div>局部组件</div>',
+            }
+            new Vue({
+              el: '#app',
+              components: {
+                GlobalComponent,
+              },
+              template: `<global-component />`,
+            })
+          }
+          局部()
+        }
+        // 组件注册()
+        插件注册 = () => {
+          Vue.use({
+            install(Vue) {
+              Vue.directive('my-plugin', function (el, binding) {
+                console.log('插件注册')
+              })
+            },
+          })
+          new Vue({
+            el: '#app',
+            template: `<div v-my-plugin>插件注册</div>`,
+          })
+        }
+        // 插件注册()
+        self = () => {
+          new Vue({
+            el: '#app',
+            methods: {
+              shout(s) {
+                console.log(s, '只在event.target是当前元素时触发')
+              },
+            },
+            template: `
+              <div @click.self="shout(1)">ok</div>
+            `,
+          })
+        }
+        // self()
+        once = () => {
+          new Vue({
+            el: '#app',
+            methods: {
+              shout(s) {
+                console.log(s, '只触发一次')
+              },
+            },
+            template: `
+              <button @click.once="shout(1)">只触发一次</button>
+            `,
+          })
+        }
+        // once()
+        capture = () => {
+          new Vue({
+            el: '#app',
+            methods: {
+              shout(s) {
+                console.log(s, '1-2-4-3')
+              },
+            },
+            template: `
+              <div @click.capture="shout(1)">
+                捕获obj1
+                <div @click.capture="shout(2)">
+                  捕获obj2
+                  <div @click.once="shout(3)">
+                    obj3
+                    <div @click.once="shout(4)">obj4</div>
+                  </div>
+                </div>
+              </div>
+            `,
+          })
+        }
+        // capture()
+        passive = () => {
+          new Vue({
+            el: '#app',
+            methods: {
+              shout(s) {
+                console.log(s)
+              },
+            },
+            template: `
+              <div style="overflow: scroll;height: 100px;line-height: 50px;" @scroll.passive="shout(1)">
+                给onscroll加一个lazy事件</br>
+                给onscroll加一个lazy事件</br>
+                给onscroll加一个lazy事件</br>
+              </div>
+            `,
+          })
+        }
+        // passive()
+        native = () => {
+          const NativeC = {
+            template: `
+              <button >原生
+              </button>
+            `,
+          }
+          new Vue({
+            el: '#app',
+            components: { NativeC },
+            methods: {
+              shout(s) {
+                console.log(s)
+              },
+            },
+            template: `
+              <NativeC @click.native="shout(1)" />
+            `,
+          })
+        }
+        // native()
+      }
+      注册()
+      使用 = () => {
+        new Vue({
+          el: '#app',
+          methods: {
+            shout: (s) => console.log(s),
+          },
+          template: `
+            <div>
+              <button @click.left="shout('left')">left</button>
+              <button @click.right="shout('right')">right</button>
+              <button @click.middle="shout('middle')">middle</button>
+            </div>
+          `,
+        })
+      }
+      // 使用()
+    </script>
+  </body>
+</html>
