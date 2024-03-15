@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <div id="app" style="display: none"></div>
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.9/vue.js"></script>
+    <script>
+      // 提纲: 表单修饰符; 事件修饰符; 鼠标修饰符; 键值修饰符; vBind修饰符;
+      表单修饰符 = () => {
+        // lazy; trim; number;
+        lazy = () => {
+          new Vue({
+            el: '#app',
+            data() {
+              return { value: '表单修饰符.lazy' }
+            },
+            template: `
+              <div>
+                <input type="text" v-model.lazy="value" />
+                <p>{{value}}</p>
+              </div>
+            `,
+          })
+        }
+        // lazy()
+        trim = () => {
+          new Vue({
+            el: '#app',
+            data() {
+              return { value: '表单修饰符.trim' }
+            },
+            template: `
+              <input type="text" v-model.trim="value" />
+            `,
+          })
+        }
+        // trim()
+
+        number = () => {
+          new Vue({
+            el: '#app',
+            data() {
+              return { age: 0 }
+            },
+            template: `
+              <input v-model.number="age" type="number" />
+            `,
+          })
+        }
+        number()
+      }
+      // 表单修饰符()
+      事件修饰符 = () => {
+        // stop; prevent; self; once; capture; passive; native;
+        stop = () => {
+          new Vue({
+            el: '#app',
+            data() {
+              return { age: 0 }
+            },
+            methods: {
+              shout(s) {
+                console.log(s, '只输出1')
+              },
+            },
+            template: `
+              <div @click="shout(2)">
+                <button @click.stop="shout(1)">ok</button>
+              </div>
+            `,
+          })
+        }
+        // stop()
+        prevent = () => {
+          new Vue({
+            el: '#app',
+            methods: {
+              shout(s) {
+                console.log(s, '只在event.target是当前元素时触发')
+              },
+            },
+            template: `
+              <div @click.self="shout(1)">ok</div>
+            `,
+          })
+        }
+        // prevent()
+        self = () => {
+          new Vue({
+            el: '#app',
+            methods: {
+              shout(s) {
+                console.log(s, '只在event.target是当前元素时触发')
+              },
+            },
+            template: `
+              <div @click.self="shout(1)">ok</div>
+            `,
+          })
+        }
+        // self()
+        once = () => {
+          new Vue({
+            el: '#app',
+            methods: {
+              shout(s) {
+                console.log(s, '只触发一次')
+              },
+            },
+            template: `
+              <button @click.once="shout(1)">只触发一次</button>
+            `,
+          })
+        }
+        // once()
+        capture = () => {
+          new Vue({
+            el: '#app',
+            methods: {
+              shout(s) {
+                console.log(s, '1-2-4-3')
+              },
+            },
+            template: `
+              <div @click.capture="shout(1)">
+                捕获obj1
+                <div @click.capture="shout(2)">
+                  捕获obj2
+                  <div @click.once="shout(3)">
+                    obj3
+                    <div @click.once="shout(4)">obj4</div>
+                  </div>
+                </div>
+              </div>
+            `,
+          })
+        }
+        // capture()
+        passive = () => {
+          new Vue({
+            el: '#app',
+            methods: {
+              shout(s) {
+                console.log(s)
+              },
+            },
+            template: `
+              <div style="overflow: scroll;height: 100px;line-height: 50px;" @scroll.passive="shout(1)">
+                给onscroll加一个lazy事件</br>
+                给onscroll加一个lazy事件</br>
+                给onscroll加一个lazy事件</br>
+              </div>
+            `,
+          })
+        }
+        // passive()
+        native = () => {
+          const NativeC = {
+            template: `
+              <button >原生
+              </button>
+            `,
+          }
+          new Vue({
+            el: '#app',
+            components: { NativeC },
+            methods: {
+              shout(s) {
+                console.log(s)
+              },
+            },
+            template: `
+              <NativeC @click.native="shout(1)" />
+            `,
+          })
+        }
+        native()
+      }
+      // 事件修饰符()
+      鼠标修饰符 = () => {
+        new Vue({
+          el: '#app',
+          methods: {
+            shout: (s) => console.log(s),
+          },
+          template: `
+            <div>
+              <button @click.left="shout('left')">left</button>
+              <button @click.right="shout('right')">right</button>
+              <button @click.middle="shout('middle')">middle</button>
+            </div>
+          `,
+        })
+      }
+      // 鼠标修饰符()
+      键值修饰符 = () => {
+        new Vue({
+          el: '#app',
+          methods: {
+            shout: (s) => console.log(s, 'enter'),
+          },
+          template: `
+            <input type="text" @keyup.enter="shout('enter')">
+          `,
+        })
+      }
+      // 键值修饰符()
+      vBind修饰符 = () => {
+        // vAsync; vProps; vCarnel;
+        vAsync = () => {
+          const Child = {
+            mounted() {
+              setTimeout(() => {
+                this.$emit('update:myMessage', 'child update')
+              }, 2000)
+            },
+            template: `<input v-model="$attrs.myMessage" />`,
+          }
+          new Vue({
+            el: '#app',
+            components: { Child },
+            data: {
+              bar: 'foo',
+            },
+            template: `
+              <Child :myMessage.sync="bar" />
+            `,
+          })
+        }
+        // vAsync()
+        vProps = () => {
+          new Vue({
+            el: '#app',
+            data: {
+              bar: 'foo',
+            },
+            mounted() {
+              console.log(this.$refs.input.index, 'foo')
+            },
+            template: `<input ref="input" :index.prop="bar" />`,
+          })
+        }
+        // vProps()
+        vCarnel = () => {
+          new Vue({
+            el: '#app',
+            data: {
+              viewBox: 'viewBox',
+            },
+            template: `<div :viewBox="viewBox">将命名变为小驼峰</div>`,
+          })
+        }
+        vCarnel()
+      }
+      vBind修饰符()
+    </script>
+  </body>
+</html>
