@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <div id="app"></div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.9/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.5.0/axios.js"></script>
+    <script>
+      // 提纲: axios使用; 封装原因; 前缀; 请求头与超时时间; 请求方法; 拦截器;
+      axios使用 = () => {
+        axios基本 = () => {
+          var app = new Vue({
+            el: '#app',
+            data() {
+              return {
+                msg: 'hello world',
+              }
+            },
+            async mounted() {
+              const { data } = await axios({
+                url: 'http://localhost:3000/api',
+                method: 'GET',
+                params: {
+                  type: '',
+                  page: 1,
+                },
+              })
+              this.msg = data
+            },
+            template: `<p>{{msg}}</p>`,
+          })
+        }
+        // axios基本()
+        axiosAll = () => {
+          function getUserAccount() {
+            return axios.get('http://localhost:3000/user/12345')
+          }
+          function getUserPermissions() {
+            return axios.get('http://localhost:3000/user/12345/permissions')
+          }
+          axios.all([getUserAccount(), getUserPermissions()]).then(
+            axios.spread(function (res1, res2) {
+              console.log('res1, res2:', res1, res2)
+            })
+          )
+        }
+        axiosAll()
+      }
+      // axios使用()
+      封装原因 = () => {
+        axios('http://localhost:3000/user/12345', {
+          method: 'GET',
+          timeout: 1000,
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'xxx',
+          },
+          transformQequest: [
+            function (data, headers) {
+              return data
+            },
+          ],
+        }).then(
+          (res) => {
+            console.log(res)
+          },
+          (err) => {
+            if (err.code === 'ERR_NETWORK') {
+              console.log('网络错误')
+              return
+            }
+            if (err.response.status === 401) {
+              console.log('token过期')
+            }
+            if (err.response.status === 403) {
+              console.log('权限不足')
+            }
+            console.log(err)
+          }
+        )
+      }
+      // 封装原因()
+      前缀 = () => {
+        console.log(`
+          // 利用 node 环境变量判断开发、测试、生产环境
+          if(process.env.NODE_ENV === 'development'){
+            axios.defaults.baseURL = 'http://dev.xxx.com'
+          }else if(process.env.NODE_ENV === 'production'){
+            axios.defaults.baseURL = 'http://pro.xxx.com'
+          }
+        `)
+        console.log(`
+          // 本地调试使用 devServer 实现代理
+          devServer: {
+            proxy: {
+              '/api': {
+                target: 'http://dev.xxx.com',
+                changeOrigin: true,
+                pathRewrite: {
+                  '^/api': ''
+                }
+              }
+            }
+          }
+        `)
+      }
+      // 前缀()
+      请求头与超时时间 = () => {
+        const service = axios.create({
+          timeout: 3000,
+          headers: {
+            get: {
+              'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+            },
+            post: {
+              'Content-Type': 'application/json;charset=utf-8',
+            },
+          },
+        })
+        service('http://localhost:3000/user/12345').then((res) =>
+          console.log(res.data, `/user/12345`)
+        )
+      }
+      // 请求头与超时时间()
+      请求方法 = () => {
+        // get
+        function httpGet({ url, params }) {
+          return new Promise((resolve, rej) => {
+            axios
+              .get(url, {
+                params,
+              })
+              .then((res) => {
+                resolve(res.data)
+              })
+              .catch((err) => {
+                rej(err)
+              })
+          })
+        }
+        function httpPost({ url, params = {}, data = {} }) {
+          return new Promise((resolve, rej) => {
+            axios({
+              url,
+              method: 'post',
+              data,
+              params,
+              transformQequest: [
+                function (data) {
+                  let ret = ''
+                  for (let it in data) {
+                    ret +=
+                      encodeURIComponent(it) +
+                      '=' +
+                      encodeURIComponent(data[it]) +
+                      '&'
+                  }
+                  return ret
+                },
+              ],
+            })
+              .then((res) => {
+                resolve(res.data)
+              })
+              .catch((err) => {
+                rej(err)
+              })
+          })
+        }
+        const getorglist = (params = {}) =>
+          httpGet({ url: 'http://localhost:3000/apps/api/org/list', params })
+        getorglist({ id: 2000 }).then((res) => {
+          console.log(res, `/apps/api/org/list`)
+        })
+      }
+      // 请求方法()
+      拦截器 = () => {
+        请求拦截器 = () => {
+          axios.interceptors.request.use(
+            (config) => {
+              console.log(
+                config.url,
+                `http://localhost:3000/user/12345/permissions`
+              )
+              typeof token !== 'undefined' &&
+                (config.headers.Authorization = token)
+              return config
+            },
+            (err) => {
+              return Promise.reject(err)
+            }
+          )
+          axios.get('http://localhost:3000/user/12345/permissions')
+        }
+        // 请求拦截器()
+        响应拦截器 = () => {
+          axios.interceptors.response.use(
+            (res) => {
+              console.log(res.data, `/user/12345/permissions `)
+              return res
+            },
+            (err) => {
+              return Promise.reject(err)
+            }
+          )
+          axios.get('http://localhost:3000/user/12345/permissions')
+        }
+        响应拦截器()
+      }
+      拦截器()
+    </script>
+  </body>
+</html>
