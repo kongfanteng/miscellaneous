@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <div id="app"></div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.9/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.5.0/axios.js"></script>
+    <script>
+      // 提纲: 后端接口错误; 全局错误; 生命周期钩子
+      后端接口错误 = () => {
+        axios.interceptors.response.use(
+          (response) => {
+            return response
+          },
+          (error) => {
+            return Promise.reject(error)
+          }
+        )
+        axios('http://localhost:8000').catch((e) => {
+          console.log(e)
+        })
+      }
+      // 后端接口错误()
+      全局错误 = () => {
+        Vue.config.errorHandler = (error, vm, info) => {
+          console.log(error)
+        }
+        Vue.component('cat', {
+          template: `<div>
+            <h1>cat</h1>
+            <slot></slot>
+            </div>`,
+          props: {
+            name: {
+              required: true,
+              type: String,
+            },
+          },
+        })
+        Vue.component('kitten', {
+          template: `<div><h1>Kitten:{{ dontexist() }}</h1></div>`,
+          props: {
+            required: true,
+            type: String,
+          },
+        })
+        new Vue({
+          el: '#app',
+          template: `<div v-cloak><cat name="my cat"><kitten></kitten></cat></div>`,
+        })
+      }
+      // 全局错误()
+      生命周期钩子 = () => {
+        Vue.component('cat', {
+          template: `<div>
+            <h1>cat</h1>
+            <slot></slot>
+            </div>`,
+          props: {
+            name: {
+              required: true,
+              type: String,
+            },
+          },
+          errorCaptured(err, vm, info) {
+            console.log(`cat EC: ${err.toString()}\ninfo: ${info}`)
+            return false
+          },
+        })
+        Vue.component('kitten', {
+          template: `<div><h1>Kitten:{{ dontexist() }}</h1></div>`,
+          props: {
+            required: true,
+            type: String,
+          },
+        })
+        new Vue({
+          el: '#app',
+          template: `<div v-cloak><cat name="my cat"><kitten></kitten></cat></div>`,
+        })
+      }
+      生命周期钩子()
+    </script>
+  </body>
+</html>
