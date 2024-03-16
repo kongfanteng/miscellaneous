@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <div id="app"></div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.9/vue.js"></script>
+    <script>
+      // 提纲: 全局注册; 局部注册; 表单防止重复提交; 图片懒加载; 一键Copy;
+      全局注册 = () => {
+        Vue.directive('focus', {
+          inserted(el) {
+            el.focus()
+          },
+        })
+        var app = new Vue({
+          el: '#app',
+          template: `<input v-focus />`,
+        })
+      }
+      // 全局注册()
+      局部注册 = () => {
+        var app = new Vue({
+          el: '#app',
+          directives: {
+            focus: {
+              inserted(el) {
+                el.focus()
+              },
+            },
+          },
+          template: `<input v-focus />`,
+        })
+      }
+      // 局部注册()
+      表单防止重复提交 = () => {
+        Vue.directive('throttle', {
+          bind: (el, binding) => {
+            let throttleTime = binding.value // 节流时间
+            if (!throttleTime) {
+              throttleTime = 2000 // 默认2000毫秒
+            }
+            let cbFn
+            el.addEventListener(
+              'click',
+              (event) => {
+                if (!cbFn) {
+                  cbFn = setTimeout(() => {
+                    cbFn = null
+                  }, throttleTime)
+                } else {
+                  event && event.stopImmediatePropagation()
+                }
+              },
+              true
+            )
+          },
+        })
+        var app = new Vue({
+          el: '#app',
+          data() {
+            return {
+              item: {
+                oldProperty: '旧属性',
+              },
+            }
+          },
+          methods: {
+            addProperty() {
+              this.item[new Date()] = '新属性'
+              this.$forceUpdate()
+            },
+          },
+          template: `<div>
+              <p v-for="(value,key) in item" :key="key">{{value}}</p>
+              <button v-throttle @click="addProperty">动态添加新属性</button>
+            </div>`,
+        })
+      }
+      // 表单防止重复提交()
+      图片懒加载 = () => {
+        const lazyLoad = {
+          install(Vue, options) {
+            // 代替图片的loading图
+            let defaultSrc = options.default
+            Vue.directive('lazy', {
+              bind(el, binding) {
+                lazyLoad.init(el, binding.value, defaultSrc)
+              },
+              inserted(el) {
+                // 兼容处理
+                if ('IntersectionObserver' in window) {
+                  lazyLoad.observe(el)
+                } else {
+                  lazyLoad.listenerScroll(el)
+                }
+              },
+            })
+          },
+          init(el, val, def) {
+            el.setAttribute('data-src', val)
+            el.setAttribute('src', def)
+          },
+          // 利用 IntersectionObserver 监听 el
+          observe(el) {
+            let io = new IntersectionObserver((entries) => {
+              let realSrc = el.dataset.s
+              if (entries[0].isIntersecting) {
+                if (realSrc) {
+                  el.src = realSrc
+                  el.removeAttribute('data-s')
+                }
+              }
+            })
+            // TODO: 调试用，待删除
+            setTimeout(() => {
+              io.observe(el)
+            }, 2000)
+          },
+          // 监听 scroll 事件
+          listenerScroll(el) {
+            let windowHeight = document.documentElement.clientHeight
+            let elTop = el.getBoundingClientRect().top
+            let elBottom = el.getBoundingClientRect().bottom
+            let realSrc = el.dataset.s
+            if (elTop - windowHeight < 0 && elBottom > 0) {
+              if (realSrc) {
+                el.src = realSrc
+                el.removeAttribute('data-s')
+              }
+            }
+          },
+          throttle(fn, delay) {
+            let timer, prevTime
+            return function (...args) {
+              let currTime = Date.now()
+              let context = this
+              if (!prevTime) prevTime = currTime
+              clearTimeout(timer)
+              if (currTime - prevTime > delay) {
+                prevTime = currTime
+                fn.apply(context, args)
+                clearTimeout(timer)
+                return
+              }
+              timer = setTimeout(() => {
+                prevTime = Date.now()
+                timer = null
+                fn.apply(context, args)
+              }, delay)
+            }
+          },
+        }
+        Vue.use(lazyLoad, {
+          default:
+            'https://images.pexels.com/photos/2437299/pexels-photo-2437299.jpeg',
+        })
+        var app = new Vue({
+          el: '#app',
+          template: `<div>
+            <img width="200px" src='https://images.pexels.com/photos/1005417/pexels-photo-1005417.jpeg' data-s='https://images.pexels.com/photos/1005417/pexels-photo-1005417.jpeg' v-lazy />
+          </div>`,
+        })
+      }
+      // 图片懒加载()
+      一键Copy = () => {
+        const vCopy = {
+          bind(el, { value }) {
+            console.log('value:', value)
+            el.$value = value
+            el.handler = () => {
+              if (!el.$value) {
+                console.log('无复制内容')
+                return
+              }
+              const textarea = document.createElement('textarea')
+              textarea.readOnly = 'readOnly'
+              textarea.style.position = 'absolute'
+              textarea.style.left = '-9999px'
+              textarea.value = el.$value
+              document.body.appendChild(textarea)
+              textarea.select()
+              const result = document.execCommand('copy')
+              if (result) {
+                console.log('复制成功！')
+              }
+              document.body.removeChild(textarea)
+            }
+            el.addEventListener('click', el.handler)
+          },
+          componentUpdated(el, { value }) {
+            el.$value = value
+          },
+          unbind(el) {
+            el.removeEventListener('click', el.handler)
+          },
+        }
+        var app = new Vue({
+          el: '#app',
+          directives: { copy: vCopy },
+          template: `
+            <div>
+              <p v-copy="11111">复制内容</p>
+            </div>
+          `,
+        })
+      }
+      一键Copy()
+    </script>
+  </body>
+</html>
