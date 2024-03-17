@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <div id="app"></div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.9/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.5.0/axios.js"></script>
+    <script>
+      // 提纲: axios使用; 简易版axios;
+      const axios使用 = () => {
+        // 发送请求；请求拦截器；响应拦截器；取消请求。
+        const 发送请求 = () => {
+          console.log(`
+          直接传入配置: axios(config)
+          传入url和配置: axios(url, config)
+          直接调用请求方法，传入url和配置: axios[method](url[, option])
+          直接调用请求方法，传入data、url和配置: axios[method](url[, data[, option]])
+          调用request方法: axios.request(config)
+          axiosInstance具备axios功能: const axiosInstance = axios.create(config)
+          调用all和传入spread回调: axios.all([axiosInstance1, axiosInstance2]).then(axios.spread((response1, response2)=>{}))
+          `)
+        }
+        // 发送请求()
+        const 请求拦截器 = () => {
+          console.log(`
+            axios.interceptors.request.use(function(config){
+              // 发送请求前处理的代码
+              return config
+            }, function(error){
+              // 发送请求错误相关的代码
+              return Promise.reject(error)
+            })
+          `)
+        }
+        // 请求拦截器()
+        const 响应拦截器 = () => {
+          console.log(`
+            axios.interceptors.response.use(function(response){
+              // 得到响应数据后处理的代码
+              return response
+            }, function(error){
+              // 得到错误响应数据后处理的代码
+              return Promise.reject(error)
+            })
+          `)
+        }
+        // 响应拦截器()
+        const 取消请求 = () => {
+          方式一 = () => {
+            const CancelToken = axios.CancelToken
+            const source = CancelToken.source()
+            axios
+              .get('http://localhost:3000', {
+                cancelToken: source.token,
+              })
+              .then((res) => {
+                console.log(res)
+              })
+              .catch((e) => {
+                console.log(e.message, `主动取消请求`)
+              })
+            source.cancel('主动取消请求')
+          }
+          // 方式一()
+          方式二 = () => {
+            const CancelToken = axios.CancelToken
+            let cancel
+            axios
+              .get('http://localhost:3000', {
+                cancelToken: new CancelToken(function executor(c) {
+                  cancel = c
+                }),
+              })
+              .catch((e) => {
+                console.log(e.message, `主动取消请求`)
+              })
+            cancel('主动请求取消')
+          }
+          方式二()
+        }
+        // 取消请求()
+      }
+      axios使用()
+      const 简易版axios = () => {
+        const 构建Axios = (InterceptorsManage) => {
+          return class Axios {
+            constructor() {
+              this.interceptors = {
+                request: new InterceptorsManage(),
+                response: new InterceptorsManage(),
+              }
+            }
+            request(config) {
+              // 拦截器和请求组装队列
+              let chain = [this.sendAjax.bind(this), undefined] // 成对出现的，失败回调暂时不处理
+              // 请求拦截
+              this.interceptors.request.handlers.forEach((interceptor) => {
+                chain.unshift(interceptor.fullfied, interceptor.rejected)
+              })
+              // 响应拦截
+              this.interceptors.response.handlers.forEach((interceptor) => {
+                chain.push(interceptor.fullfied, interceptor.rejected)
+              })
+              // 执行队列，每次执行一对，并给 promise 赋最新的值
+              let promise = Promise.resolve(config)
+              while (chain.length > 0) {
+                let then = chain.shift()
+                promise = promise.then(then, chain.shift())
+              }
+              return promise
+            }
+            sendAjax(config) {
+              return new Promise((resolve) => {
+                const { url = '', method = 'get', data = {} } = config
+                const xhr = new XMLHttpRequest()
+                xhr.open(method, url, true)
+                xhr.onload = function () {
+                  console.log(xhr.responseText)
+                  resolve(xhr.responseText)
+                }
+                xhr.send(data)
+              })
+            }
+          }
+        }
+        /*
+         * @example
+         * 调用:
+            const Axios = 构建Axios()
+            const axios = 导出axios(Axios)
+            axios({ url: 'http://localhost:3000/api' }).then((res) =>
+              console.log(res, '/api')
+            )
+          */
+        const 导出axios = (Axios, util) => {
+          function CreateAxiosFn() {
+            let axios = new Axios()
+            let req = axios.request.bind(axios)
+            util.extend(req, Axios.prototype, axios)
+            util.extend(req, axios)
+            return req
+          }
+          return CreateAxiosFn()
+        }
+
+        const AxiosMethod = (Axios) => {
+          const methodsArr = [
+            'get',
+            'delete',
+            'head',
+            'options',
+            'put',
+            'patch',
+            'post',
+          ]
+          methodsArr.forEach((method) => {
+            Axios.prototype[method] = function (config) {
+              console.log(`执行${method}方法`)
+              if (['get', 'delete', 'head', 'options'].includes(method)) {
+                // 两个参数
+                return this.request({
+                  method,
+                  url: arguments[0],
+                  ...(arguments[1] || {}),
+                })
+              } else {
+                // 三个参数
+                return this.request({
+                  method,
+                  url: arguments[0],
+                  data: arguments[1] || {},
+                  ...(arguments[2] || {}),
+                })
+              }
+              return this.request(Object.assign(config, { method }))
+            }
+          })
+          const util = {
+            extend(a, b, context) {
+              for (let key in b) {
+                if (b.hasOwnProperty(key)) {
+                  if (typeof b[key] === 'function') {
+                    a[key] = b[key].bind(context)
+                  } else {
+                    a[key] = b[key]
+                  }
+                }
+              }
+            },
+          }
+          return {
+            util,
+          }
+        }
+
+        const 构建拦截器 = () => {
+          return class InterceptorsManage {
+            constructor() {
+              this.handlers = []
+            }
+            use(fullfied, rejected) {
+              this.handlers.push({
+                fullfied,
+                rejected,
+              })
+            }
+          }
+        }
+        const InterceptorsManage = 构建拦截器()
+        const Axios = 构建Axios(InterceptorsManage)
+        const { util } = AxiosMethod(Axios)
+        const axios = 导出axios(Axios, util)
+        axios.interceptors.request.use(
+          (config) => {
+            console.log(`request`, config)
+            return config
+          },
+          (error) => {
+            console.log(error)
+            return Promise.reject(error)
+          }
+        )
+        axios.interceptors.response.use(
+          (res) => {
+            console.log(`response`, res)
+            return res
+          },
+          (error) => {
+            console.log(error)
+            return Promise.reject(error)
+          }
+        )
+        axios({ url: 'http://localhost:3000/api' }).then((res) =>
+          console.log(res, '/api')
+        )
+      }
+      简易版axios()
+    </script>
+  </body>
+</html>
