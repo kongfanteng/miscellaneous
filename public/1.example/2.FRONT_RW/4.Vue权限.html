@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <div id="app"></div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.9/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.5.0/axios.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue-router/3.6.5/vue-router.js"></script>
+    <script>
+      // 提纲：接口权限1、2; 路由权限1、2; 按钮权限1、2; 菜单权限1、2;
+      const 接口权限 = () => {
+        axios.interceptors.request.use((config) => {
+          config.headers['token'] = 'errToken'
+          return config
+        })
+        axios.interceptors.response.use((response) => {
+          const {
+            data: { code, msg },
+          } = response
+          if (code === 40099 || code === 40098) {
+            console.log(msg)
+            // 调整登录页面
+          }
+          return response
+        })
+        axios('http://localhost:3000/token')
+      }
+      // 接口权限()
+      const 路由权限 = () => {
+        const one挂载全部路由标记权限信息 = () => {
+          const routerMap = [
+            {
+              path: '/permission',
+              component: {
+                template: `<div>Layout<router-view></router-view></div>`,
+              },
+              redirect: `/permission/index`,
+              allowShow: true,
+              meta: {
+                title: 'permission',
+                role: ['admin', 'editor'],
+              },
+              children: [
+                {
+                  path: 'page',
+                  component: {
+                    template: `<div>/permission/page</div>`,
+                  },
+                  name: 'pagePerssion',
+                  meta: {
+                    title: 'pagePerssion',
+                    role: ['admin'],
+                  },
+                },
+                {
+                  path: 'direction',
+                  component: {
+                    template: `<div>/permission/direction</div>`,
+                  },
+                  name: 'directionPerssion',
+                  meta: {
+                    title: 'directionPerssion',
+                  },
+                },
+              ],
+            },
+          ]
+          Vue.use(VueRouter)
+
+          const router = new VueRouter({
+            mode: 'hash',
+            routes: routerMap,
+          })
+
+          new Vue({
+            el: '#app',
+            router,
+            template: `<div>
+                <h1>Hello App!</h1>
+                <p>
+                  <router-link to="/permission/page">pagePerssion</router-link>
+                  <router-link to="/permission/direction">directionPerssion</router-link>
+                </p>
+                <hr/>
+                <router-view></router-view>
+              </div>`,
+          })
+        }
+        // one挂载全部路由标记权限信息()
+        const twoAddRoutes = () => {
+          const routes = [
+            {
+              path: '/403',
+              name: '403',
+              component: {
+                template: `<div>403</div>`,
+              },
+            },
+          ]
+
+          Vue.use(VueRouter)
+          const router = new VueRouter({
+            routes,
+          })
+          // permission judge function
+          function hasPermission(roles, permissionRoles) {
+            if (roles.indexOf('admin') >= 0) return true // admin permission passed directly
+            if (!permissionRoles) return true
+            return permissionRoles.some((role) => roles.indexOf(role) >= 0)
+          }
+          const whiteList = ['/login', '/authredirect']
+          const roles = ['editor']
+          let hasRoutes = false
+          router.beforeEach((to, from, next) => {
+            axios.get('http://localhost:3000/getRouters').then((res) => {
+              const routes = res.data
+              if (!hasRoutes) {
+                hasRoutes = true
+                router.addRoute(routes[0])
+                next({ ...to, replace: true })
+              }
+              const { role } = to.meta
+              if (hasPermission(roles, role)) {
+                next()
+              } else {
+                console.log('没有权限')
+                next({ name: '403' })
+              }
+            })
+          })
+          new Vue({
+            el: '#app',
+            router,
+            template: `<div>
+                <h1>Hello App!</h1>
+                <p>
+                  <router-link to="/permission/page">pagePerssion</router-link>
+                  <router-link to="/permission/direction">directionPerssion</router-link>
+                </p>
+                <hr/>
+                <router-view></router-view>
+              </div>`,
+          })
+        }
+        twoAddRoutes()
+      }
+      // 路由权限()
+      const 菜单权限 = () => {
+        const 菜单后端路由前端 = () => {
+          const routes = [
+            {
+              path: '/403',
+              name: '403',
+              component: {
+                template: `<div>403</div>`,
+              },
+            },
+            {
+              path: '/permission',
+              component: {
+                template: `<div>Layout<router-view></router-view></div>`,
+              },
+              redirect: `/permission/index`,
+              allowShow: true,
+              meta: {
+                title: 'permission',
+                role: ['admin', 'editor'],
+              },
+              children: [
+                {
+                  path: 'page',
+                  component: {
+                    template: `<div>/permission/page</div>`,
+                  },
+                  name: 'pagePerssion',
+                  meta: {
+                    title: 'pagePerssion',
+                    role: ['admin'],
+                  },
+                },
+                {
+                  path: 'direction',
+                  component: {
+                    template: `<div>/permission/direction</div>`,
+                  },
+                  name: 'directionPerssion',
+                  meta: {
+                    title: 'directionPerssion',
+                  },
+                },
+              ],
+            },
+          ]
+          Vue.use(VueRouter)
+
+          const router = new VueRouter({
+            mode: 'hash',
+            routes,
+          })
+          const whiteList = ['login', '403', 'dashboard', 'directionPerssion']
+          function hasPermission(router, accessMenu) {
+            if (whiteList.indexOf(router.name) !== -1 || !router.name) {
+              return true
+            }
+
+            let menu = accessMenu.includes(router.name)
+            if (menu.name) {
+              return true
+            }
+            return false
+          }
+
+          router.beforeEach((to, from, next) => {
+            axios.get('http://localhost:3000/accessMenu').then((res) => {
+              const menu = res.data
+              if (hasPermission(to, menu)) {
+                next()
+              } else {
+                console.log('没有权限')
+                next({ name: '403' })
+              }
+            })
+          })
+
+          new Vue({
+            el: '#app',
+            router,
+            template: `<div>
+                <h1>Hello App!</h1>
+                <p>
+                  <router-link to="/permission/page">pagePerssion</router-link>
+                  <router-link to="/permission/direction">directionPerssion</router-link>
+                </p>
+                <hr/>
+                <router-view></router-view>
+              </div>`,
+          })
+        }
+        // 菜单后端路由前端()
+        const 菜单路由都由后端返回 = () => {
+          const Home = { template: '<div>Home</div>' }
+          const UserInfo = { template: '<div>UserInfo</div>' }
+          const routesComponent = {
+            home: Home,
+            userInfo: UserInfo,
+          }
+          const routes = [
+            { path: '/', name: 'home', component: 'home' },
+            { path: '/user', name: 'userInfo', component: 'userInfo' },
+          ]
+          const router = new VueRouter({
+            // routes,
+          })
+          let afterQeq = false
+          router.beforeEach((to, from, next) => {
+            if (!afterQeq) {
+              afterQeq = true
+              axios.get('http://localhost:3000/menuRoutes').then((res) => {
+                const routes = res.data
+                function setRoutesLocal(routes) {
+                  if (!routes) return
+                  routes.forEach((item) => {
+                    routesComponent[item.component] &&
+                      (item.component = routesComponent[item.component])
+                    if (item.children) {
+                      setRoutesLocal(item.children)
+                    }
+                  })
+                }
+                setRoutesLocal(routes)
+                routes.forEach((route) => {
+                  router.addRoute(route)
+                })
+              })
+              next({ ...to, replace: true })
+            }
+            next()
+          })
+          const app = new Vue({
+            router,
+            template: `<div>
+              <h1>菜单路由都由后端返回</h1>
+              <router-view></router-view>
+            </div>`,
+          })
+          app.$mount('#app')
+        }
+        菜单路由都由后端返回()
+      }
+      // 菜单权限()
+      const 按钮权限 = () => {
+        const routes = [
+          {
+            path: '/',
+            redirect: '权限测试',
+          },
+          {
+            path: '/permission',
+            name: '权限测试',
+            meta: {
+              btnPermission: ['admin', 'supper', 'normal'],
+            },
+            children: [
+              {
+                path: 'supperpage',
+                component: {
+                  template: '<div>supper</div>',
+                },
+                name: 'supperpage',
+                meta: {
+                  btnPermission: ['admin', 'supper'],
+                },
+              },
+              {
+                path: 'normalpage',
+                component: {
+                  template: '<div>normal</div>',
+                },
+                name: 'normalpage',
+                meta: {
+                  btnPermission: ['admin', 'normal'],
+                },
+              },
+            ],
+          },
+        ]
+        const has = Vue.directive('has', {
+          bind(el, binding, vnode) {
+            let btnPermission = []
+            if (binding.value) {
+              btnPermission = Array.of(binding.value)
+            } else {
+              btnPermission = vnode.context.$route.meta.btnPermission
+            }
+            if (!Vue.prototype.$_has(btnPermission)) {
+              // 假设你有一个元素变量 el
+              setTimeout(() => {
+                el?.parentNode?.removeChild(el)
+              })
+            }
+          },
+        })
+
+        Vue.prototype.$_has = function (value) {
+          let isExist = false
+          let btnPermissionStr = sessionStorage.getItem('btnPermission')
+          if (btnPermissionStr == undefined || btnPermissionStr == null) {
+            return false
+          }
+          if (value.indexOf(btnPermissionStr) > -1) {
+            isExist = true
+          }
+          return isExist
+        }
+        new Vue({
+          el: '#app',
+          router: new VueRouter({
+            routes,
+          }),
+          template: `<div>
+            <h1>菜单权限</h1>
+            <p><button v-has>编辑</button>
+            <button v-has>支持</button></p>
+            <router-view></router-view>
+          </div>`,
+        })
+      }
+      按钮权限()
+    </script>
+  </body>
+</html>
