@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <div id="app"></div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.9/vue.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue-router/3.6.5/vue-router.js"></script>
+    <script>
+      // 提纲：keepAliveBase; 缓存后获取数据;
+      const keepAliveBase = () => {
+        // 基本使用 - 路由 - home - list - VueRouter - new Vue - keep-alive
+        const routes = [
+          {
+            path: '/',
+            name: 'home',
+            component: {
+              mounted() {
+                console.log('home', `每次切换打印`)
+              },
+              template: `<div>
+                <div>home</div>
+                <router-link to="/list">list</router-link>
+              </div>`,
+            },
+            meta: {
+              title: '首页',
+            },
+          },
+          {
+            path: '/list',
+            name: 'list',
+            component: {
+              mounted() {
+                console.log('list', `仅打印一次`)
+              },
+              template: `<div>
+                <div>list</div>
+                <router-link to="/">home</router-link>
+              </div>`,
+            },
+            meta: {
+              keepAlive: true,
+              title: '列表',
+            },
+          },
+        ]
+        const router = new VueRouter({ routes })
+        const app = new Vue({
+          el: '#app',
+          router,
+          template: `
+            <div>
+              <keep-alive>
+                <router-view v-if="$route.meta.keepAlive"></router-view>
+              </keep-alive>
+              <router-view v-if="!$route.meta.keepAlive"></router-view>
+            </div>
+          `,
+        })
+      }
+      // keepAliveBase()
+      const 缓存后获取数据 = () => {
+        // useBeforeRouteEnter useActived
+        // routes - home - list - getData - VueRouter - new Vue
+        const routes = [
+          {
+            path: '/',
+            name: 'home',
+            component: {
+              template: `<div>
+                <div>home</div>
+                <router-link to="/list">list</router-link>
+              </div>`,
+            },
+            meta: {
+              title: '首页',
+            },
+          },
+          {
+            path: '/list',
+            name: 'list',
+            component: {
+              beforeRouteEnter(fo, from, next) {
+                next((vm) => {
+                  console.log('beforeRouteEnter data')
+                })
+              },
+              activated() {
+                console.log('activated data')
+              },
+              template: `<div>
+                <div>list</div>
+                <router-link to="/">home</router-link>
+              </div>`,
+            },
+            meta: {
+              keepAlive: true,
+              title: '列表',
+            },
+          },
+        ]
+        const router = new VueRouter({ routes })
+        const app = new Vue({
+          el: '#app',
+          router,
+          template: `
+            <div>
+              <keep-alive>
+                <router-view v-if="$route.meta.keepAlive"></router-view>
+              </keep-alive>
+              <router-view v-if="!$route.meta.keepAlive"></router-view>
+            </div>
+          `,
+        })
+      }
+      缓存后获取数据()
+    </script>
+  </body>
+</html>
