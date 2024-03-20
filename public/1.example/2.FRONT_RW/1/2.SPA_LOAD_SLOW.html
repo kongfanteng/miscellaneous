@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <div id="app"></div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.9/vue.js"></script>
+    <script>
+      // 提纲: 计算首屏时间; 解决方案;
+      const 计算首屏时间 = () => {
+        // DOMContentLoaded监听；performance属性；
+        document.addEventListener('DOMContentLoaded', () => {
+          console.log('first contentful painting')
+        })
+        console.log(performance.getEntriesByName('first contentful painting'))
+      }
+      // 计算首屏时间()
+      const 解决方案 = () => {
+        // 减小入口文件体积; 静态资源本地缓存; UI框架按需加载; 图片资源的压缩; 组件重复打包; 开启GZip压缩compressionWebpackPlugin; 使用SSR_NuxtJS;
+        const 减小入口文件体积 = () => {
+          console.log(`
+            在 vue-router 使用动态加载路由
+            const routes = [
+              {
+                path: '/blogs',
+                name: 'showBlogs',
+                component: () => import('./componennts/ShowBlogs.vue'),
+              },
+            ]
+          `)
+        }
+        // 减小入口文件体积()
+        const 静态资源本地缓存 = () => {
+          const desc = `
+          采用 http 缓存，设置 Cache-Control, Last-Modified, Etag
+          采用 Service Worker`
+          console.log(desc)
+        }
+        // 静态资源本地缓存()
+        const UI框架按需加载 = () => {
+          console.log(`
+            import ElementUI from 'element-ui';
+            Vue.use(ElementUI)
+            改为局部导入
+            import { Button } form 'element-ui'
+            Vue.use(Button)
+          `)
+        }
+        // UI框架按需加载()
+        const 组件重复打包 = () => {
+          console.log(`
+            webpack 文件修改 CommonChunkPlugin 配置
+            minChunks: 3 // 使用 3 次以上的包抽离
+          `)
+        }
+        // 组件重复打包()
+        const 图片资源的压缩 = () => {
+          console.log(`
+            对图片资源进行适当的压缩
+            页面使用的 icon 或小图标或雪碧图，合并到同一张图上
+          `)
+        }
+        // 图片资源的压缩()
+        const 开启GZip压缩compressionWebpackPlugin = () => {
+          console.log(`
+          引入 compression-webpack-plugin
+          yarn add compression-webpack-plugin
+          
+          vue.config.js 修改 webpack 配置
+          const CompressionPlugin = require('compression-webpack-plugin')
+          {
+            // ...
+            configureWebpack: (config) => {
+              if(process.env.NODE_ENV === 'production'){
+                config.mode = 'production'
+                return {
+                  plugins: [new CompressionPlugin({
+                    test: /\.js$|\.html$|\.css$/,
+                    threshold: 10240, // 对超过 10k 的进行压缩
+                    deleteOriginalAssets: false, // 不删除源文件
+                  })],
+                }
+              }
+            }
+          }
+          `)
+        }
+        // 开启GZip压缩compressionWebpackPlugin()
+        const 使用SSR_NuxtJS = () => {
+          console.log(`
+            服务器渲染
+            vue cli 3.0 新增了 SSR 的能力，可以使用 vue-cli-service serve --mode ssr
+            vue 建议使用 Nuxt.js
+          `)
+        }
+        使用SSR_NuxtJS()
+      }
+      解决方案()
+    </script>
+  </body>
+</html>
