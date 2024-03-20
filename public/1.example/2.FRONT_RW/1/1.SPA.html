@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <div id="app"></div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.9/vue.js"></script>
+    <script>
+      // 提纲: hashMode; historyMode;
+      const hashMode = () => {
+        // 定义 Router - routes - 监听 load 和 hashchange - push - route - 使用 router
+        class Router {
+          constructor() {
+            this.routes = {}
+            this.currentUrl = ''
+            window.addEventListener('load', this.refresh, false)
+            window.addEventListener('hashchange', this.refresh, false)
+          }
+          refresh() {
+            console.log('refresh')
+          }
+          push(path) {
+            this.routes[path] && this.routes[path]()
+          }
+          route(path, cb) {
+            this.routes[path] = cb
+          }
+        }
+        window.miniRouter = new Router()
+        miniRouter.route('/', () => {
+          console.log('home')
+        })
+        miniRouter.route('/list', () => {
+          console.log('list')
+        })
+        miniRouter.push('/')
+        miniRouter.push('/list')
+      }
+      hashMode()
+      const historyMode = () => {
+        // 定义 Router - route - push - pushState replaceState popState - 使用 Router
+        class Router {
+          constructor() {
+            this.routes = {}
+            window.addEventListener('popstate', (e) => {
+              const path = e?.state?.path
+              this.routes[path]?.()
+            })
+          }
+          route(path, cb) {
+            this.routes[path] = cb
+          }
+          push(path) {
+            window.history.pushState({ path }, null, path)
+            this.routes[path]?.()
+          }
+        }
+        window.miniRouter = new Router()
+        miniRouter.route('/', () => {
+          console.log('home')
+        })
+        miniRouter.route('/list', () => {
+          console.log('list')
+        })
+        miniRouter.push('/list')
+      }
+      // historyMode()
+    </script>
+  </body>
+</html>
