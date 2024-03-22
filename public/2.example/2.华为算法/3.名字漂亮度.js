@@ -17,7 +17,7 @@
  */
 function namePretty(n, ...args) {
   const Array26CharCodeAt97 = (n, ...args) => {
-    console.log(args);
+    console.log(args)
     for (let i = 0; i < n; i++) {
       let sum = 0
       const nameArr = args[i].toLowerCase().split('')
@@ -50,4 +50,31 @@ function namePretty(n, ...args) {
   }
   objectValues(n, ...args)
 }
-namePretty(2, 'lisi', 'zhangsan')
+// namePretty(2, 'lisi', 'zhangsan')
+
+const 贪心算法 = () => {
+  function greedyLoad(capacity, items) {
+    let loaded = 0
+    const loadedItems = []
+    items.sort((a, b) => b.value - a.value) // 按单位价值排序物品
+    for (let i = 0; i < items.length; i++) {
+      if (loaded + items[i].weight <= capacity) {
+        loaded += items[i].weight
+        loadedItems.push(items[i])
+      }
+    }
+    return loadedItems
+  }
+
+  // 使用示例
+  const capacity = 10
+  const items = [
+    { name: 'item1', weight: 4, value: 4 },
+    { name: 'item2', weight: 3, value: 6 },
+    { name: 'item3', weight: 5, value: 5 },
+  ]
+
+  const loadedItems = greedyLoad(capacity, items)
+  console.log(loadedItems) // 输出装载的物品，每一步做出最优解
+}
+贪心算法()
