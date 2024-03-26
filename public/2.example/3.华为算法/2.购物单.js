@@ -1,112 +1,34 @@
+
 /**
  * 购物单
- * 动态规划
+ * @param {*} sumNum 
+ * @param  {...any} args 
  */
-function shoppingList(sumAndNum, ...args) {
-  let base = 10
-  let [sum, num] = sumAndNum.split(' ').map(Number)
-  sum = sum / base
-  let list = {}
-  for (let i = 0; i < num; i++) {
-    let [v, p, q] = args[i].split(' ').map(Number)
-    v = v / base
-    if (q) {
-      list[q] = list[q] || []
-      list[q][1] = list[q][1] || []
-      list[q][1].push(v, v * p)
-    } else {
-      list[i + 1] = list[i + 1] || []
-      list[i + 1][0] = [v, v * p]
-    }
-  }
-  list = [...Object.values(list)]
-  // console.log(list)
-  let len = list.length
-  let dp = Array.from({ length: len }, () => new Array(sum + 1).fill(0))
-  dp[-1] = new Array(sum + 1).fill(0)
-  for (let i = 0; i < len; i++) {
-    for (let j = 1; j <= sum; j++) {
-      const goods = list[i] // [[80, 160]]
-      const mainGoods = goods[0] // [80, 160]
-      const mainGoodsPrice = mainGoods[0]
-      const mainGoodsWeight = mainGoods[1]
-      const minorGoods = goods[1] // [40, 200, 30, 150]
-      if (j < mainGoodsPrice) {
-        dp[i][j] = dp[i - 1][j]
-      } else {
-        let minorGoodsPrice1,
-          minorGoodsPrice2,
-          minorGoodsWeight1,
-          minorGoodsWeight2
-        minorGoods &&
-          ((minorGoodsPrice1 = minorGoods[0]),
-          (minorGoodsWeight1 = minorGoods[1]),
-          (minorGoodsPrice2 = minorGoods[2]),
-          (minorGoodsWeight2 = minorGoods[3]))
-        dp[i][j] = Math.max(
-          dp[i - 1][j],
-          dp[i - 1][j - mainGoodsPrice] + mainGoodsWeight
-        )
-        j >= mainGoodsPrice + minorGoodsPrice1 &&
-          (dp[i][j] = Math.max(
-            dp[i][j],
-            dp[i - 1][j - mainGoodsPrice - minorGoodsPrice1] +
-              mainGoodsWeight +
-              minorGoodsWeight1
-          ))
-        j >= mainGoodsPrice + minorGoodsPrice2 &&
-          (dp[i][j] = Math.max(
-            dp[i][j],
-            dp[i - 1][j - mainGoodsPrice - minorGoodsPrice2] +
-              mainGoodsWeight +
-              minorGoodsWeight2
-          ))
-        j >= mainGoodsPrice + minorGoodsPrice1 + minorGoodsPrice2 &&
-          (dp[i][j] = Math.max(
-            dp[i][j],
-            dp[i - 1][
-              j - mainGoodsPrice - minorGoodsPrice1 - minorGoodsPrice2
-            ] +
-              mainGoodsWeight +
-              minorGoodsWeight1 +
-              minorGoodsWeight2
-          ))
-      }
-    }
-  }
-  console.log(dp[len - 1][sum] * base)
-}
-shoppingList2('1000 5', '800 2 0', '400 5 1', '300 5 1', '400 3 0', '500 2 0')
-// shoppingList('50 5', '20 3 5', '20 3 5', '10 3 0', '10 2 0', '10 1 0')
-function shoppingList2(sumNum, ...args) {
-  // list; forListLen; forSum; dp[i][j]; 无附件; 1附件; 2附件;
-  const getContext = (sumNum, args) => {
-    const base = 10
-    let list = {}
+function shoppingList(sumNum, ...args) {
+  // getContext; buy; setDp;
+  // forListLen; forSum; dp[i][j];
+  // 无附件; 1附件; 2附件;
+  const getContext = (sumNum, ...args) => {
+    let [base, list] = [10, {}]
     let [sum, num] = sumNum.split(' ').map(Number)
     sum = sum / base
     for (let i = 0; i < num; i++) {
-      let [price, w, attachment] = args[i].split(' ').map(Number)
-      price = price / base
-      if (attachment) {
-        list[attachment] = list[attachment] || []
-        list[attachment][1] = list[attachment][1] || []
-        list[attachment][1].push(price, price * w)
-      } else {
+      let [p, v, q] = args[i].split(' ').map(Number)
+      p = p / base
+      if (!q) {
         list[i + 1] = list[i + 1] || []
-        list[i + 1][0] = [price, price * w]
+        list[i + 1][0] = [p, p * v]
+      } else {
+        list[q] = list[q] || []
+        list[q][1] = list[q][1] || []
+        list[q][1].push(p, p * v)
       }
     }
-    return {
-      list: [...Object.values(list)],
-      base,
-      sum,
-      num,
-    }
+    list = [...Object.values(list)]
+    return { list, base, sum }
   }
-  const context = getContext(sumNum, args)
   const buy = (context) => {
-    const { list, base, sum, num } = context
+    const { list, base, sum } = context
     const len = list.length
     const dp = Array.from({ length: len }, () => Array(sum + 1).fill(0))
     dp[-1] = Array(sum + 1).fill(0)
@@ -115,54 +37,51 @@ function shoppingList2(sumNum, ...args) {
         setDp(i, j, dp, list)
       }
     }
-    const res = dp[len - 1][sum] * base
-    console.log(res)
+    return dp[len - 1][sum] * base
   }
-  const setDp = (i, j, dp, list) => {
-    const goods = list[i] // [[80, 160]]
-    const mainGoods = goods[0] // [80, 160]
-    const mainGoodsPrice = mainGoods[0]
-    const mainGoodsWeight = mainGoods[1]
-    const minorGoods = goods[1] // [40, 200, 30, 150]
-    if (j < mainGoodsPrice) {
-      dp[i][j] = dp[i - 1][j]
+  const setDp = (index, money, dp, list) => {
+    const goods = list[index]
+    const mGoods = goods[0]
+    const nGoods = goods[1]
+    const [mGoodsP, mGoodsW] = mGoods
+    if (money < mGoodsP) {
+      dp[index][money] = dp[index - 1][money]
     } else {
-      let minorGoodsPrice1,
-        minorGoodsPrice2,
-        minorGoodsWeight1,
-        minorGoodsWeight2
-      minorGoods &&
-        ((minorGoodsPrice1 = minorGoods[0]),
-        (minorGoodsWeight1 = minorGoods[1]),
-        (minorGoodsPrice2 = minorGoods[2]),
-        (minorGoodsWeight2 = minorGoods[3]))
-      dp[i][j] = Math.max(
-        dp[i - 1][j],
-        dp[i - 1][j - mainGoodsPrice] + mainGoodsWeight
+      dp[index][money] = Math.max(
+        dp[index - 1][money],
+        dp[index - 1][money - mGoodsP] + mGoodsW
       )
-      j >= mainGoodsPrice + minorGoodsPrice1 &&
-        (dp[i][j] = Math.max(
-          dp[i][j],
-          dp[i - 1][j - mainGoodsPrice - minorGoodsPrice1] +
-            mainGoodsWeight +
-            minorGoodsWeight1
-        ))
-      j >= mainGoodsPrice + minorGoodsPrice2 &&
-        (dp[i][j] = Math.max(
-          dp[i][j],
-          dp[i - 1][j - mainGoodsPrice - minorGoodsPrice2] +
-            mainGoodsWeight +
-            minorGoodsWeight2
-        ))
-      j >= mainGoodsPrice + minorGoodsPrice1 + minorGoodsPrice2 &&
-        (dp[i][j] = Math.max(
-          dp[i][j],
-          dp[i - 1][j - mainGoodsPrice - minorGoodsPrice1 - minorGoodsPrice2] +
-            mainGoodsWeight +
-            minorGoodsWeight1 +
-            minorGoodsWeight2
-        ))
+      nGoods && setDpMinor(nGoods, dp, mGoods, money, index)
     }
   }
-  buy(context)
+  const setDpMinor = (nGoods, dp, mGoods, money, index) => {
+    const [mGoodsP, mGoodsW] = mGoods
+    const [nGoodsP1, nGoodsW1, nGoodsP2, nGoodsW2] = nGoods
+    money >= mGoodsP + nGoodsP1 &&
+      (dp[index][money] = Math.max(
+        dp[index][money],
+        dp[index - 1][money - mGoodsP - nGoodsP1] + mGoodsW + nGoodsW1
+      ))
+    money >= mGoodsP + nGoodsP2 &&
+      (dp[index][money] = Math.max(
+        dp[index][money],
+        dp[index - 1][money - mGoodsP - nGoodsP2] + mGoodsW + nGoodsW2
+      ))
+    money >= mGoodsP + nGoodsP1 + nGoodsP2 &&
+      (dp[index][money] = Math.max(
+        dp[index][money],
+        dp[index - 1][money - mGoodsP - nGoodsP1 - nGoodsP2] +
+          mGoodsW +
+          nGoodsW1 +
+          nGoodsW2
+      ))
+  }
+  const context = getContext(sumNum, ...args)
+  const res = buy(context)
+  console.log(res)
 }
+function shoppingList优化1(sumNum, ...args) {
+  
+}
+
+shoppingList('1000 5', '800 2 0', '400 5 1', '300 5 1', '400 3 0', '500 2 0')
