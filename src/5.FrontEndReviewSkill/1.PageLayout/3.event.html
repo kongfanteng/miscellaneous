@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event</title>
+  </head>
+  <body>
+    <p id="ev">目标元素</p>
+    <script>
+      const ev = document.getElementById('ev')
+      window.addEventListener(
+        'click',
+        () => {
+          console.log('window captrue')
+        },
+        true
+      )
+      document.addEventListener(
+        'click',
+        () => {
+          console.log('document captrue')
+        },
+        true
+      )
+      document.documentElement.addEventListener(
+        'click',
+        () => {
+          console.log('html captrue')
+        },
+        true
+      )
+      document.body.addEventListener(
+        'click',
+        () => {
+          console.log('body captrue')
+        },
+        true
+      )
+      ev.addEventListener(
+        'click',
+        () => {
+          console.log('ev captrue')
+        },
+        true
+      )
+
+      const eve = new Event('test')
+      ev.addEventListener('test', () => {
+        console.log('test')
+      })
+      ev.dispatchEvent(eve)
+    </script>
+  </body>
+</html>
