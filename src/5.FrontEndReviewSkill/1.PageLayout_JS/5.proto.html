@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>原型对象</title>
+  </head>
+  <body>
+    <script>
+      const o1 = { name: 'kft1' }
+      const o2 = new Object({ name: 'kft2' })
+      const Fn = function () {
+        this.name = 'kft3'
+      }
+      const o3 = new Fn()
+      const o4 = Object.create({ name: 'kft4' })
+      console.log('o1, o2, o3, o4:', o1, o2, o3, o4)
+      console.log('o3 instanceof Fn:', o3 instanceof Fn)
+      console.log('o3 instanceof Object:', o3 instanceof Object)
+      console.log(
+        `o3.__proto__ === Fn.prototype 为 true，执行结果：${
+          o3.__proto__ === Fn.prototype
+        }`
+      )
+      console.log(
+        `Fn.prototype.__proto__ === Object.prototype 为 true，执行结果: ${
+          Fn.prototype.__proto__ === Object.prototype
+        }`
+      )
+      console.log(
+        `o3.__proto__.constructor === Fn 为 true，执行结果: ${
+          o3.__proto__.constructor === Fn
+        }`
+      )
+      console.log(
+        `o3.__proto__.constructor === Object 为 false，执行结果: ${
+          o3.__proto__.constructor === Object
+        }`
+      )
+
+      const new2 = function (func) {
+        const o = Object.create(func.prototype)
+        const k = func.call(o)
+        if (typeof k === 'object') {
+          return k
+        } else {
+          return o
+        }
+      }
+      const o6 = new2(Fn)
+      console.log(o6)
+    </script>
+  </body>
+</html>
