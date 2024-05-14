@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Type</title>
+  </head>
+  <body>
+    <script>
+      console.log(`Number('1'): ${Number('1')}===1`)
+      console.log(`Number('1a'): ${Number('1a')}===NaN`)
+      console.log(`Number(true): ${Number(true)}===1`)
+      console.log(`Number(false): ${Number(false)}===0`)
+      console.log(`Number(null): ${Number(null)}===0`)
+      console.log(`Number(undefined): ${Number(undefined)}===NaN`)
+      console.log(`Number(NaN): ${Number(NaN)}===NaN`)
+      console.log(`Number(Infinity): ${Number(Infinity)}===Infinity`)
+      console.log(`Number({a:1}): ${Number({ a: 1 })}===NaN`)
+    </script>
+    <script>
+      console.log(`String({a: 1}): ${String({ a: 1 })}===[object Object]`)
+    </script>
+    <script>
+      console.log(`Boolean(undefined): ${Boolean(undefined)}===false`)
+      console.log(`Boolean(null): ${Boolean(null)}===false`)
+      console.log(`Boolean(NaN): ${Boolean(NaN)}===false`)
+      console.log(`Boolean(0): ${Boolean(0)}===false`)
+      console.log(`Boolean(''): ${Boolean('')}===false`)
+    </script>
+    <script>
+      console.log(`[]+[]: ${[] + []}===''`)
+      console.log(`[]+{}: ${[] + {}}===[object Object]`)
+      console.log(`{}+[]: ${{} + []}===[object Object]`)
+      console.log(`{}+{}: ${{} + {}}===[object Object][object Object]`)
+      console.log(`true+true: ${true + true}===2`)
+      console.log(`1+{a:1}: ${1 + { a: 1 }}===1[object Object]`)
+    </script>
+  </body>
+</html>
