@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Box</title>
+  </head>
+  <body>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+    <!-- BFC解决垂直方向边距重叠 -->
+    <section id="margin">
+      <style>
+        #margin p {
+          margin: 10px auto 20px;
+          background-color: blue;
+        }
+      </style>
+      <p>1</p>
+      <div style="overflow: hidden"><p>2</p></div>
+      <p>3</p>
+    </section>
+    <!-- BFC 元素不与 float 元素重叠 -->
+    <section id="layout">
+      <style>
+        #layout {
+          background-color: yellow;
+        }
+        #layout .left {
+          float: left;
+          width: 100px;
+          height: 100px;
+          background-color: red;
+        }
+        #layout .right {
+          height: 200px;
+          background-color: blue;
+          overflow: auto;
+        }
+      </style>
+      <div class="left"></div>
+      <div class="right"></div>
+    </section>
+    <!-- 非BFC元素浮动子元素不参与高度计算 -->
+    <div id="float">
+      <style>
+        #float {
+          background-color: red;
+          /* overflow: auto; */
+          float: left;
+        }
+        .float {
+          float: left;
+        }
+      </style>
+      <div class="float">我是浮动元素</div>
+    </div>
+  </body>
+</html>
