@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>面向对象</title>
+  </head>
+  <body>
+    <script>
+      function Parent() {
+        this.name = 'parent'
+      }
+      function Child() {
+        this.type = 'child'
+      }
+      构造函数 = () => {
+        function Parent() {
+          this.name = 'parent'
+        }
+        function Child() {
+          Parent.call(this)
+          this.type = 'child'
+        }
+        Parent.prototype.getName = function () {
+          return this.name
+        }
+        const child = new Child()
+        console.log(child)
+        console.log(child.getName())
+      }
+      原型链 = () => {
+        Child.prototype = new Parent()
+        const child = new Child()
+        console.log(child.name)
+      }
+      组合 = () => {
+        function Child() {
+          Parent.call(this)
+          this.type = 'child'
+        }
+        Child.prototype = new Parent()
+        const child = new Child()
+        console.log(child.name)
+      }
+      组合优化 = () => {
+        function Child() {
+          Parent.call(this)
+          this.type = 'child'
+        }
+        Child.prototype = Object.create(Parent.prototype)
+        Child.prototype.constructor = Child
+        const child = new Child()
+        console.log(child)
+      }
+      组合优化()
+    </script>
+  </body>
+</html>
