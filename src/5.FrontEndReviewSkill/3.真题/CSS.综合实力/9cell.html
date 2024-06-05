@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 引入reset.css -->
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/reseter.css/2.0.0/minireseter.css"
+      rel="stylesheet"
+    />
+    <!-- 语义化 -->
+    <ul>
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+      <li>7</li>
+      <li>8</li>
+      <li>9</li>
+    </ul>
+    <style>
+      ul {
+        width: 300px;
+        height: 300px;
+        display: flex;
+        flex-wrap: wrap;
+        margin: 20px;
+      }
+      li {
+        width: 100px;
+        border: 4px solid white;
+        /* 盒模型 */
+        box-sizing: border-box;
+        margin-left: -4px;
+        margin-top: -4px;
+      }
+      li:hover {
+        border-color: red;
+        z-index: 2;
+      }
+      ul li:nth-child(3n + 1) {
+        margin-left: 0;
+      }
+    </style>
+  </body>
+</html>
