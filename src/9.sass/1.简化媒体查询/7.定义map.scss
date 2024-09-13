@@ -1,0 +1,48 @@
+// 定义map
+$breakpoints: (
+  'phone': (320px, 480px),
+  'pad': (481px, 768px),
+  'notebook': (769px, 1024px),
+  'desktop': (1025px, 1280px),
+  'tv': (1281px)
+);
+
+@mixin responseTo($breakname) {
+  $bp: map-get($breakpoints, $breakname );
+
+  @if type-of($bp)=='list' {
+    @media (min-width: nth($bp, 1)) and (max-width: nth($bp, 2)) {
+      @content;
+    }
+  }
+
+  @else {
+    @media (min-width: $bp) {
+      @content;
+    }
+  }
+}
+
+.header {
+  width: 100%;
+
+  @include responseTo('phone') {
+    height: 50px;
+  }
+
+  @include responseTo('pad') {
+    height: 60px;
+  }
+
+  @include responseTo('notebook') {
+    height: 80px;
+  }
+
+  @include responseTo('desktop') {
+    height: 10px;
+  }
+
+  @include responseTo('tv') {
+    height: 120px;
+  }
+}

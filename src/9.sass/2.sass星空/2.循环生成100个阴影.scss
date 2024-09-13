@@ -1,0 +1,20 @@
+@function getShadow($n) {
+  $shadows: '#{random(100)}vw #{random(200)}vh #fff';
+
+  @for $i from 2 through $n {
+    $shadows: '#{$shadows}, #{random(100)}vw #{random(100)}vh #fff';
+  }
+
+  @return unquote($shadows);
+}
+
+.layer1 {
+  $size: 10px;
+  position: fixed;
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  left: 0;
+  top: 0;
+  box-shadow: getShadow(100);
+}

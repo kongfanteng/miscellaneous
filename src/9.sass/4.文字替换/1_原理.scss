@@ -1,0 +1,11 @@
+h1::after {
+  content: 'a';
+  font-size: 10vw;
+  color: #fff;
+  text-shadow: 1px 1px 4px #333;
+  text-transform: uppercase; // 大小写
+
+  @media screen and (max-width: 600px) {
+    content: 'b';
+  }
+}

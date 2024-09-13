@@ -1,0 +1,22 @@
+$btnColors: #409EFF, #67C23A, #E6A23C, #F56C6C, #6c6d71;
+
+@for $i from 1 through length($btnColors) {
+  .btn.type-#{$i} {
+    $color: nth($btnColors, $i);
+    background-color: $color;
+    color: #fff;
+
+    &:hover {
+      background-color: lighten($color, 10%);
+    }
+
+    &:active {
+      background-color: darken($color, 10%);
+    }
+
+    &:disabled {
+      background-color: lighten($color, 20%);
+      color: white;
+    }
+  }
+}

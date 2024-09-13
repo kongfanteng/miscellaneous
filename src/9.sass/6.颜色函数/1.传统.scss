@@ -1,0 +1,18 @@
+.btn.type-1 {
+  $color: #409eff;
+  background-color: $color;
+  color: #fff;
+
+  &:hover {
+    background-color: lighten($color, 10%);
+  }
+
+  &:active {
+    background-color: darken($color, 10%);
+  }
+
+  &:disabled {
+    background-color: lighten($color, 20%);
+    color: white;
+  }
+}

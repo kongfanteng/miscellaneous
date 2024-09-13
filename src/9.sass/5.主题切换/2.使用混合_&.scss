@@ -1,0 +1,17 @@
+@mixin useTheme {
+  html[data-theme='light'] & {
+    background-color: #fff;
+    color: #000;
+  }
+
+  html[data-theme='dark'] & {
+    background-color: #000;
+    color: #fff;
+  }
+}
+
+.item {
+  width: 100px;
+  height: 100px;
+  @include useTheme;
+}

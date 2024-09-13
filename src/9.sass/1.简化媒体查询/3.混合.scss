@@ -1,0 +1,20 @@
+// sass 混合
+// 用以提取公共代码，sass方便源代码书写
+@mixin flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  width: 100%;
+  @include flex;
+
+  手机 {
+    height: 50px;
+  }
+
+  平板 {
+    height: 60px;
+  }
+}

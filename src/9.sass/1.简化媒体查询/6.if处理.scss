@@ -1,0 +1,27 @@
+// if处理
+@mixin responseTo($breakname) {
+  @if $breakname =='phone' {
+    @media (min-width: 320px) and (max-width: 480px) {
+      @content;
+    }
+  }
+
+  @else if $breakname =='pad' {
+    @media (min-width: 481px) and (max-width: 768px) {
+      @content;
+    }
+  }
+}
+
+.header {
+  width: 100%;
+
+  @include responseTo('phone') {
+    height: 50px;
+  }
+
+  @include responseTo('pad') {
+    height: 60px;
+  }
+
+}

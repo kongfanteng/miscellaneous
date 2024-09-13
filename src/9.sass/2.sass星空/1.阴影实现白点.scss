@@ -1,0 +1,11 @@
+.layer1 {
+  $size: 10px; // unquote('#{random(100)}px')
+  position: fixed;
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  background-color: #f40;
+  left: 0;
+  top: 0;
+  box-shadow: 20vw 30vh #fff, 40vw 50vh #fff;
+}
