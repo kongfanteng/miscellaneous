@@ -1,0 +1,21 @@
+{
+    "settings": {
+        "babel": {
+            "requireConfigFile": false
+        }
+    },
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "import"
+    ],
+    "rules": {
+        // 其他规则...
+    }
+}
